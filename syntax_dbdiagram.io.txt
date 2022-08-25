@@ -1,0 +1,49 @@
+TABLE Brands
+{
+  BrandId UNIQUEIDENTIFIER PK
+  Name VARCHAR(200)
+  thumb VARCHAR (200)
+}
+
+TABLE Categories
+{
+  CategoryId UNIQUEIDENTIFIER PK
+  Name VARCHAR(200)
+  ParentCategoryId UNIQUEIDENTIFIER 
+}
+
+Ref: Categories.ParentCategoryId > Categories.CategoryId
+
+TABLE Discounts
+{
+  DiscountId UNIQUEIDENTIFIER PK
+  Description VARCHAR(200)
+  StartDate DATE
+  EndDate DATE
+  Percentage INT
+}
+
+TABLE Products
+{
+  ProductId UNIQUEIDENTIFIER PK
+  Name VARCHAR(200)
+  Description VARCHAR(200)
+  Thumbnail VARCHAR(200)
+  UnitPrice REAL
+  CategoryId UNIQUEIDENTIFIER 
+  BrandId UNIQUEIDENTIFIER 
+  DiscountId  UNIQUEIDENTIFIER 
+}
+Ref: Products.CategoryId > Categories.CategoryId
+Ref: Products.BrandId > Brands.BrandId
+Ref: Products.DiscountId > Discounts.DiscountId
+
+
+TABLE Product_Images
+{
+  ImageId UNIQUEIDENTIFIER PK
+  Uri VARCHAR(200)
+  ProductId UNIQUEIDENTIFIER 
+}
+
+Ref: Product_Images.ProductId > Products.ProductId

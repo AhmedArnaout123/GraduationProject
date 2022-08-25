@@ -1,0 +1,9 @@
+Get Products with a reference if they are in a wish lis or a shopping cart:
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT Products.Id, Products.Name, MainImageUri, Price, Categories.Name, Discounts.Percentage, 
+       RatesSum / NULLIF((SELECT COUNT(ProductId) FROM Reviews WHERE ProductId = Reviews.ProductId),0) as "Rate",
+	   (SELECT COUNT(ProductId) FROM Products_ShoppingCarts WHERE Products_ShoppingCarts.ProductId = ProductId) as "Wish List",
+	   (SELECT COUNT (ProductId) FROM Products_WishLists WHERE Products_WishLists.ProductId=ProductId) as "Shopping Cart"
+  FROM [GP.ECommerce1].[dbo].[Products]
+  INNER JOIN Categories on Categories.Id = CategoryId
+  INNER JOIN Discounts on Discounts.Id = DiscountId

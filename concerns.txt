@@ -1,0 +1,12 @@
+how long does it take to insert, update, and retrive by Id on general.
+
+how long does it take to retrive a user by his email, and by his Id.
+  -- when user logs in, or when directing the admin to user profile when he is checking the order
+
+how long does it take to retrive the whole collection or part of it.
+
+how to update a field that exist on other 10000 document in mongodb.
+
+how to handle transactions in nosql databases.
+
+how to scale databases.

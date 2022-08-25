@@ -1,0 +1,35 @@
+Fetch Product on the home page.
+Search for a product by name.
+Get Products for a certain brands.
+
+generate reports about orders.
+
+search for product in a set of 1000000 product
+buy a product with a certain copon.
+checkout discounts for a product.
+search for products with a certain brands.
+
+sort product according to the lowest price.
+add discounts for product
+see which product is bought the most among a certain age people.
+see which proudct is boght the most among clients of certiane country, city, age, gender.
+place orders.
+
+Home page: we want to get 
+
+
+
+
+
+
+
+search for courses where there are more than 100000 course in the db
+sort courses with the most rated, best seller, recently added.
+buy a course.
+but a course with certain copon.
+
+start a new live traing course.
+join to new live training course.
+post question in a course FAQ.
+
+
