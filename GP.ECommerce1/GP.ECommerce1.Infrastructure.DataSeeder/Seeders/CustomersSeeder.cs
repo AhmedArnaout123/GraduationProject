@@ -24,7 +24,7 @@ public class CustomersSeeder
                 Email = Randoms.RandomEmail(),
                 FirstName = Randoms.RandomString(Randoms.RandomInt(3, 8)),
                 LastName = Randoms.RandomString(Randoms.RandomInt(3, 8)),
-                PasswordHash = Randoms.RandomString(Randoms.RandomInt(20, 25)),
+                Password = Randoms.RandomString(Randoms.RandomInt(20, 25)),
                 PhoneNumber = Randoms.RandomPhoneNumber()
             };
             await _mediator.Send(command);

@@ -2,11 +2,13 @@
 
 public class Product
 {
-    public string Id { get; set; } = "";
+    public Guid Id { get; set; }
 
-    public Category Category { get; set; } = new();
+    public  Guid CategoryId { get; set; }
 
-    public Discount Discount { get; set; } = new();
+    public string CategoryName { get; set; } = "";
+
+    public Discount? Discount { get; set; }
 
     public string MainImageUri { get; set; } = "";
 

@@ -21,11 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Orders\CommandHandlers\CreateOrder" />
-      <Folder Include="Orders\QueriesHandler\GetOrders" />
       <Folder Include="Orders\QueriesHandler\GetOrdersStatuses" />
-      <Folder Include="Products\QueriesHandlers\GetCategoryProducts" />
-      <Folder Include="Products\QueriesHandlers\GetProducts" />
     </ItemGroup>
 
     <ItemGroup>

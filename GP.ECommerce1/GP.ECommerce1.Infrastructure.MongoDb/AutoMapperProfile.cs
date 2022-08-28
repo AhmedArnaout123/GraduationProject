@@ -3,6 +3,7 @@ using GP.ECommerce1.Core.Application.Categories.Commands.CreateCategory;
 using GP.ECommerce1.Core.Application.Customers.Commands.AddAddress;
 using GP.ECommerce1.Core.Application.Customers.Commands.CreateCustomer;
 using GP.ECommerce1.Core.Application.Discounts.Commands.CreateDiscount;
+using GP.ECommerce1.Core.Application.Orders.Commands.CreateOrder;
 using GP.ECommerce1.Core.Application.Products.Commands.CreateProduct;
 using GP.ECommerce1.Core.Application.Reviews.Commands.CreateReview;
 using GP.ECommerce1.Core.Domain;
@@ -13,58 +14,42 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        CreateMap<CreateCategoryCommand, MongoEntities.Category>()
-            .ForMember(c => c.Id, option => option.MapFrom(c => c.Id.ToString()))
-            .ForMember(c => c.ParentId, option => option.MapFrom(c => c.ParentId.ToString()));
+        CreateMap<CreateCategoryCommand, MongoEntities.Category>();
 
         CreateMap<MongoEntities.Category, Category>()
-            .ForMember(c => c.Id, option => option.MapFrom(c => Guid.Parse(c.Id)))
-            .ForMember(c => c.ParentId,
-                option => option.MapFrom<Guid?>(c => c.ParentId != null ? Guid.Parse(c.ParentId) : null));
+            .ReverseMap();
 
-        CreateMap<CreateCustomerCommand, MongoEntities.Customer>()
-            .ForMember(c => c.Id, option => option.MapFrom(c => c.Id.ToString()));
+
+        CreateMap<Address, MongoEntities.Address>()
+            .ReverseMap();
+
+        CreateMap<CreateCustomerCommand, MongoEntities.Customer>();
+
         CreateMap<MongoEntities.Customer, Customer>()
-            .ForMember(c => c.Id, option => option.MapFrom(c => Guid.Parse(c.Id)));
+            .ReverseMap();
 
         CreateMap<AddAddressCommand, MongoEntities.Address>();
 
-        CreateMap<CreateDiscountCommand, MongoEntities.Discount>()
-            .ForMember(c => c.Id, option => option.MapFrom(c => c.Id.ToString()));
-        CreateMap<MongoEntities.Discount, Discount>()
-            .ForMember(c => c.Id, option => option.MapFrom(c => Guid.Parse(c.Id)));
+        CreateMap<CreateDiscountCommand, MongoEntities.Discount>();
 
-        CreateMap<CreateReviewCommand, MongoEntities.Review>()
-            .ForMember(c => c.Id, option => option.MapFrom(c => c.Id.ToString()))
-            .ForMember(c => c.CustomerId, option => option.MapFrom(c => c.CustomerId.ToString()))
-            .ForMember(c => c.ProductId, option => option.MapFrom(c => c.ProductId.ToString()));
+        CreateMap<MongoEntities.Discount, Discount>()
+            .ReverseMap();
+
+        CreateMap<CreateProductCommand, MongoEntities.Product>();
+
+        CreateMap<MongoEntities.Product, Product>()
+            .ReverseMap();
+
+        CreateMap<CreateReviewCommand, MongoEntities.Review>();
 
         CreateMap<MongoEntities.Review, Review>()
-            .ForMember(c => c.Id, option => option.MapFrom(c => Guid.Parse(c.Id)))
-            .ForMember(c => c.CustomerId, option => option.MapFrom(c => Guid.Parse(c.CustomerId)))
-            .ForMember(c => c.ProductId, option => option.MapFrom(c => Guid.Parse(c.ProductId)));
+            .ReverseMap();
 
-        CreateMap<CreateProductCommand, MongoEntities.Product>()
-            .ForMember(c => c.Id, option => option.MapFrom(c => c.Id.ToString()))
-            .ForMember(c => c.Category, option => option.MapFrom((c) =>
-                new MongoEntities.Category
-                {
-                    ParentId = c.CategoryParentId.ToString(),
-                    Id = c.CategoryId.ToString(),
-                    Name = c.CategoryName
-                }
-            ))
-            .ForMember(c => c.Discount, option => option.MapFrom(c => new MongoEntities.Discount
-            {
-                Description = c.DiscountDescription,
-                Id = c.DiscountId.ToString() ?? "",
-                Percentage = c.DiscountPercentage
-            }));
+        CreateMap<OrderItem, MongoEntities.OrderItem>()
+            .ReverseMap();
 
-        // CreateMap<MongoEntities.Product, Product>()
-        //     .ForMember(c => c.Id, option => option.MapFrom(c => Guid.Parse(c.Id)))
-        //     .ForMember(c => c.CategoryId, option => option.MapFrom(c => c.Category.Id))
-        //     .ForMember(c => c.CategoryName, option => option.MapFrom(c => c.Category.Name))
-        //     .ForMember(c => c., option => option.MapFrom(c => Guid.Parse(c.ProductId)));
+        CreateMap<CreateOrderCommand, MongoEntities.Order>();
+        CreateMap<Order, MongoEntities.Order>()
+            .ReverseMap();
     }
 }

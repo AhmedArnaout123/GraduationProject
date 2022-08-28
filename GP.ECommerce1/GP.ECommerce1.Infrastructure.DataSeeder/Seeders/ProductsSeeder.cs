@@ -41,7 +41,7 @@ public class ProductsSeeder
                 Name = _productsNames[Randoms.RandomInt(_productsNames.Length)],
                 Price = Randoms.RandomPrice(),
                 MainImageUri = _defaultImageUrl,
-                ImagesUris = imagesUri
+                Images = imagesUri
             };
             await _mediator.Send(command);
             Console.WriteLine(i);

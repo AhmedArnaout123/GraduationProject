@@ -14,4 +14,6 @@ public class CreateReviewCommand : IRequest<Result>
     public int Rate { get; set; }
 
     public string Comment { get; set; } = "";
+    
+    public DateTime Date { get; set; }
 }

@@ -26,7 +26,7 @@ public class AddAddressCommandHandler : IRequestHandler<AddAddressCommand, Resul
             var collection = _database.GetCollection<Customer>(Constants.CustomersCollectionName);
             var address = _mapper.Map<Address>(request);
 
-            var filter = new FilterDefinitionBuilder<Customer>().Eq(c => c.Id, request.CustomerId.ToString());
+            var filter = new FilterDefinitionBuilder<Customer>().Eq(c => c.Id, request.CustomerId);
             var update = new UpdateDefinitionBuilder<Customer>().AddToSet(c => c.Addresses, address);
             await collection.UpdateOneAsync(filter, update, null,cancellationToken);
         }

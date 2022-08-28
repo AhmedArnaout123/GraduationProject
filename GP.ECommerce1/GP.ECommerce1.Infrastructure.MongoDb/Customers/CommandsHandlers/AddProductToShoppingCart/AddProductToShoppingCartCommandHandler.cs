@@ -23,14 +23,14 @@ public class AddProductToShoppingCartCommandHandler : IRequestHandler<AddProduct
             var collection = _database.GetCollection<ShoppingCart>(Constants.ShoppingCartsCollectionName);
             var item = new CartItem
             {
-                ProductId = request.ProductId.ToString(),
+                ProductId = request.ProductId,
                 Quantity = request.Quantity,
                 ProductName = request.ProductName,
                 ProductPrice = request.ProductPrice
             };
 
             var filter =
-                new FilterDefinitionBuilder<ShoppingCart>().Eq(c => c.CustomerId, request.CustomerId.ToString());
+                new FilterDefinitionBuilder<ShoppingCart>().Eq(c => c.CustomerId, request.CustomerId);
             var update = new UpdateDefinitionBuilder<ShoppingCart>().AddToSet(c => c.Items, item);
             await collection.UpdateOneAsync(filter, update, new UpdateOptions{IsUpsert = true}, cancellationToken);
         }

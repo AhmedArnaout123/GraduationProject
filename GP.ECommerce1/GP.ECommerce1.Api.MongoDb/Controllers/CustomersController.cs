@@ -2,6 +2,7 @@
 using GP.ECommerce1.Core.Application.Customers.Commands.AddProductToShoppingCart;
 using GP.ECommerce1.Core.Application.Customers.Commands.AddProductToWishList;
 using GP.ECommerce1.Core.Application.Customers.Commands.CreateCustomer;
+using GP.ECommerce1.Core.Application.Customers.Query.CustomerLogin;
 using GP.ECommerce1.Core.Application.Customers.Query.GetCustomers;
 using GP.ECommerce1.Core.Domain;
 using GP.Utilix;
@@ -47,6 +48,12 @@ public class CustomersController
     
     [HttpGet]
     public async Task<Result<List<Customer>>> GetCustomers([FromQuery] GetCustomersQuery query)
+    {
+        return await _mediator.Send(query);
+    }
+    
+    [HttpPost("Login")]
+    public async Task<Result<Customer>> CustomerLogin([FromBody] CustomerLoginQuery query)
     {
         return await _mediator.Send(query);
     }

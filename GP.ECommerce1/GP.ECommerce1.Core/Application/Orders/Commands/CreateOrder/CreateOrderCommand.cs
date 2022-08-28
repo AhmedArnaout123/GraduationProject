@@ -10,8 +10,12 @@ public class CreateOrderCommand : IRequest<Result>
     public DateTime Date { get; set; }
     public double Subtotal { get; set; }
     public Guid CustomerId { get; set; }
+
+    public string CustomerName { get; set; } = "";
+
+    public Address Address { get; set; } = new();
     
-    public Guid StatusId { get; set; }
+    public OrderStatus Status { get; set; }
 
     public List<OrderItem> Items { get; set; } = new();
 }

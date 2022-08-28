@@ -2,7 +2,7 @@
 
 public class Discount
 {
-    public string Id { get; set; } = "";
+    public Guid Id { get; set; }
 
     public int Percentage { get; set; }
 

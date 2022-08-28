@@ -7,8 +7,12 @@ public class Review
     public Guid ProductId { get; set; }
     
     public Guid CustomerId { get; set; }
-    
+
+    public string CustomerName { get; set; } = "";
+
     public int Rate { get; set; }
     
     public string Comment { get; set; } = "";
+    
+    public DateTime Date { get; set; }
 }

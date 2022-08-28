@@ -23,7 +23,7 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
         command.Parameters.AddWithValue("@LastName", request.LastName);
         command.Parameters.AddWithValue("@PhoneNumber", request.PhoneNumber);
         command.Parameters.AddWithValue("@Email", request.Email);
-        command.Parameters.AddWithValue("@PasswordHash", request.PasswordHash);
+        command.Parameters.AddWithValue("@PasswordHash", request.Password);
         try
         {
             _sqlConnection.Open();

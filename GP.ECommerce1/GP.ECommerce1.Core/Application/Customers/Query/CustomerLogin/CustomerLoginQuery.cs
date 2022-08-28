@@ -4,7 +4,7 @@ using MediatR;
 
 namespace GP.ECommerce1.Core.Application.Customers.Query.CustomerLogin;
 
-public class CustomerLoginQuery : IRequest<Result<List<Category>>>, IRequest<Result<Customer>>
+public class CustomerLoginQuery : IRequest<Result<Customer>>
 {
     public string Email { get; set; } = "";
 

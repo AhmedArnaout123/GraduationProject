@@ -2,7 +2,7 @@
 
 public class Customer
 {
-    public string Id { get; set; } = "";
+    public Guid Id { get; set; }
     
     public string FirstName { get; set; } = "";
     
@@ -19,6 +19,9 @@ public class Customer
 
 public class Address
 {
+    public Guid Id { get; set; }
+
+    public Guid CustomerId { get; set; }
     public string Country { get; set; } = "";
     public string State { get; set; } = "";
     public string City { get; set; } = "";

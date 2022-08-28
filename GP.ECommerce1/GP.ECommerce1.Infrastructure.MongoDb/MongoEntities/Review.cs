@@ -2,13 +2,15 @@
 
 public class Review
 {
-    public string Id { get; set; } = "";
+    public Guid Id { get; set; }
     
-    public string ProductId { get; set; } = "";
+    public Guid ProductId { get; set; }
     
-    public string CustomerId { get; set; } = "";
+    public Guid CustomerId { get; set; }
     
     public int Rate { get; set; }
     
     public string Comment { get; set; } = "";
+    
+    public DateTime Date { get; set; }
 }

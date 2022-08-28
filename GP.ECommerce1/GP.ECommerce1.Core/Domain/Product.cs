@@ -8,9 +8,7 @@ public class Product
 
     public string CategoryName { get; set; } = "";
     
-    public Guid? DiscountId { get; set; }
-    
-    public double? DiscountPercentage { get; set; }
+    public Discount? Discount { get; set; }
 
     public string MainImageUri { get; set; } = "";
 
@@ -20,7 +18,7 @@ public class Product
 
     public double Price { get; set; }
     
-    public int RatesSum { get; set; }
-
     public List<string> Images { get; set; } = new();
+    
+    public int Rate { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using GP.Utilix;
+﻿using GP.ECommerce1.Core.Domain;
+using GP.Utilix;
 using MediatR;
 
 namespace GP.ECommerce1.Core.Application.Products.Commands.CreateProduct;
@@ -12,12 +13,8 @@ public class CreateProductCommand : IRequest<Result>
     public string CategoryName { get; set; } = "";
 
     public Guid? CategoryParentId { get; set; }
-    
-    public Guid? DiscountId { get; set; }
 
-    public int DiscountPercentage { get; set; }
-
-    public string DiscountDescription { get; set; } = "";
+    public Discount? Discount { get; set; }
     
     public string Name { get; set; } = "";
     
@@ -27,5 +24,5 @@ public class CreateProductCommand : IRequest<Result>
     
     public string MainImageUri { get; set; } = "";
 
-    public List<string> ImagesUris { get; set; } = new();
+    public List<string> Images { get; set; } = new();
 }

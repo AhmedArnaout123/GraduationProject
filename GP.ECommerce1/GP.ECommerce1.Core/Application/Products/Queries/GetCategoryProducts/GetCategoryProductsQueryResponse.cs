@@ -13,7 +13,9 @@ public class GetCategoryProductsQueryResponseEntry
     
     public double Price { get; set; } 
     
-    public double Discount { get; set; }
+    public int DiscountPercentage { get; set; }
 
+    public double DiscountValue => Price * DiscountPercentage / 100;
+    
     public string MainImageUri { get; set; } = "";
 }

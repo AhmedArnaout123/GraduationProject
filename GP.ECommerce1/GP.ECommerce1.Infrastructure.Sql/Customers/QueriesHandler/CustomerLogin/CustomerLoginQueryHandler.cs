@@ -6,7 +6,7 @@ using MediatR;
 
 namespace GP.ECommerce1.Infrastructure.Sql.Customers.QueriesHandler.CustomerLogin;
 
-public class CustomerLoginQueryHandler : IRequestHandler<CustomerLoginQuery, Result<List<Category>>>
+public class CustomerLoginQueryHandler : IRequestHandler<CustomerLoginQuery, Result<Customer>>
 {
     private readonly SqlConnection _sqlConnection;
 
@@ -15,8 +15,9 @@ public class CustomerLoginQueryHandler : IRequestHandler<CustomerLoginQuery, Res
         _sqlConnection = sqlConnection;
     }
 
-    public async Task<Result<List<Category>>> Handle(CustomerLoginQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Customer>> Handle(CustomerLoginQuery request, CancellationToken cancellationToken)
     {
-        return new Result<List<Category>> {Value = new List<Category>()};
+        await Task.CompletedTask;
+        return new Result<Customer> {Value = new Customer()};
     }
 }

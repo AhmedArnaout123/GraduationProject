@@ -23,13 +23,13 @@ public class AddProductToWishListCommandHandler : IRequestHandler<AddProductToWi
             var collection = _database.GetCollection<WishList>(Constants.WishListsCollectionName);
             var item = new WishListItem
             {
-                ProductId = request.ProductId.ToString(),
+                ProductId = request.ProductId,
                 ProductName = request.ProductName,
                 ProductPrice = request.ProductPrice
             };
 
             var filter =
-                new FilterDefinitionBuilder<WishList>().Eq(c => c.CustomerId, request.CustomerId.ToString());
+                new FilterDefinitionBuilder<WishList>().Eq(c => c.CustomerId, request.CustomerId);
             var update = new UpdateDefinitionBuilder<WishList>().AddToSet(c => c.Items, item);
             await collection.UpdateOneAsync(filter, update, new UpdateOptions{IsUpsert = true}, cancellationToken);
         }

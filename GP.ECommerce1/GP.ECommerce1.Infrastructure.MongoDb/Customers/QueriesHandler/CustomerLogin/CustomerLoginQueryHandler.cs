@@ -30,8 +30,14 @@ public class CustomerLoginQueryHandler : IRequestHandler<CustomerLoginQuery, Res
             var passwordFilter = filterBuilder.Eq(c => c.Password, request.Password);
             var filter = filterBuilder.And(emailFilter, passwordFilter);
 
-            var customer = await collection.Find(filter).FirstAsync();
-            result.Value = _mapper.Map<Customer>(customer);
+            var customers = await collection.Find(filter).ToListAsync(cancellationToken);
+            if (!customers.Any())
+            {
+                result.Error = "Wrong Email Or Password.";
+                result.IsSuccess = false;
+            }
+            else
+                result.Value = _mapper.Map<Customer>(customers.First());
         }
         catch (Exception e)
         {

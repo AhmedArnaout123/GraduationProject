@@ -41,7 +41,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             command.Parameters.Add("@Id", SqlDbType.UniqueIdentifier);
             command.Parameters.Add("@Uri", SqlDbType.NVarChar);
             command.Parameters.Add("@ProductId", SqlDbType.UniqueIdentifier);
-            foreach (var uri in request.ImagesUris)
+            foreach (var uri in request.Images)
             {
                 command.Parameters["@Id"].Value = Guid.NewGuid();
                 command.Parameters["@Uri"].Value = uri;

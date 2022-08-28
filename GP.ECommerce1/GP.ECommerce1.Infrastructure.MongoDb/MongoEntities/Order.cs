@@ -1,14 +1,16 @@
-﻿namespace GP.ECommerce1.Core.Domain;
+﻿using GP.ECommerce1.Core.Domain;
+
+namespace GP.ECommerce1.Infrastructure.MongoDb.MongoEntities;
 
 public class Order
 {
-    public Guid Id { get; set; }
+    public string Id { get; set; } = "";
     
     public DateTime Date { get; set; }
     
     public double Subtotal { get; set; }
-    
-    public Guid CustomerId { get; set; }
+
+    public string CustomerId { get; set; } = "";
 
     public string CustomerName { get; set; } = "";
 
@@ -17,13 +19,6 @@ public class Order
     public List<OrderItem> Items { get; set; } = new();
 
     public OrderStatus Status { get; set; } = OrderStatus.AwaitingConfirmation;
-}
-
-public enum OrderStatus
-{
-    Delivered,
-    AwaitingConfirmation,
-    Shipping
 }
 
 public class OrderItem
