@@ -22,8 +22,18 @@ public class DataSeedingManager
         _mediator = mediator;
         _dataSeedingHelper = new DataSeedingHelper(mediator);
     }
-    
-    public static void SeedData(){}
+
+    public async Task SeedData()
+    {
+        await SeedCategories();
+        await SeedDiscounts();
+        await SeedProducts();
+        await SeedCustomers();
+        await SeedAddresses();
+        await SeedShoppingCartsAndWishLists();
+        await SeedReviews();
+        await SeedOrders(1000);
+    }
 
     public async Task SeedCategories()
     {
@@ -37,10 +47,10 @@ public class DataSeedingManager
         await seeder.Seed();
     }
 
-    public async Task SeedProducts()
+    public async Task SeedProducts(int count = 1000)
     {
         var seeder = new ProductsSeeder(_mediator, _dataSeedingHelper);
-        await seeder.Seed();
+        await seeder.Seed(count);
     }
 
     public async Task SeedCustomers()

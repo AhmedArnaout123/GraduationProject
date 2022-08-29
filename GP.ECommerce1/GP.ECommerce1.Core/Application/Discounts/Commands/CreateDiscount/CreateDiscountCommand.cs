@@ -8,4 +8,6 @@ public class CreateDiscountCommand : IRequest<Result>
     public Guid Id { get; set; }
 
     public int Percentage { get; set; }
+
+    public string Description { get; set; } = "";
 }

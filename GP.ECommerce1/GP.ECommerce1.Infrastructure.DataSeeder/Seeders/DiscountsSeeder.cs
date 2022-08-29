@@ -1,4 +1,5 @@
 ﻿using GP.ECommerce1.Core.Application.Discounts.Commands.CreateDiscount;
+using GP.Utilix;
 using MediatR;
 
 namespace GP.ECommerce1.Infrastructure.DataSeeder.Seeders;
@@ -21,7 +22,8 @@ public class DiscountsSeeder
             var command = new CreateDiscountCommand
             {
                 Id = Guid.NewGuid(),
-                Percentage = percentage
+                Percentage = percentage,
+                Description = Randoms.RandomSentence(6)
             };
             await _mediator.Send(command);
         }

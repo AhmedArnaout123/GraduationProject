@@ -20,10 +20,10 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, Result<
         var result = new Result<List<Product>> {IsSuccess = true};
         List<Product> products = new();
         string stmt =
-            @"SELECT Products.Id, Products.Name, Categories.Name as 'CategoryName', Discounts.Id, Discounts.Percentage as 'Discount', Description, MainImageUri, Price, CategoryId, DiscountId, RatesSum 
+            @"SELECT Products.Id, Products.Name, Categories.Name as 'CategoryName', Discounts.Percentage, Discounts.Description as 'DiscountDescription', Products.Description as 'ProductDescription', MainImageUri, Price, CategoryId, DiscountId, RatesSum 
               FROM Products 
               INNER JOIN Categories on Categories.Id = Products.CategoryId
-              Inner Join Discounts on Discounts.Id = Products.DiscountId";
+              LEFT Join Discounts on Discounts.Id = Products.DiscountId";
         var command = new SqlCommand(stmt, _sqlConnection);
         try
         {
@@ -31,21 +31,28 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, Result<
             var reader = await command.ExecuteReaderAsync(cancellationToken);
             while (reader.Read())
             {
+                Guid? discountId = Guid.TryParse(Convert.ToString(reader["DiscountId"]), out var r)
+                    ? r
+                    : null;
+                Discount? discount = null;
+                if (discountId != null)
+                {
+                    discount = new Discount
+                    {
+                        Description = Convert.ToString(reader["DiscountDescription"])!,
+                        Id = discountId.Value,
+                        Percentage = Convert.ToInt32(reader["Percentage"])
+                    };
+                }
                 var product = new Product
                 {
                     Id = Guid.Parse(Convert.ToString(reader["Id"])!),
                     Name = Convert.ToString(reader["Name"])!,
-                    Description = Convert.ToString(reader["Description"])!,
+                    Description = Convert.ToString(reader["ProductDescription"])!,
                     CategoryId = Guid.Parse(Convert.ToString(reader["CategoryId"])!),
                     CategoryName = Convert.ToString(reader["CategoryName"])!,
-                    DiscountId = Guid.TryParse(Convert.ToString(reader["DiscountId"]), out var r)
-                        ? r
-                        : null,
-                    DiscountPercentage = double.TryParse(Convert.ToString(reader["Discount"]), out var x)
-                        ? x
-                        : null,
+                    Discount = discount,
                     Price = Convert.ToDouble(reader["Price"]),
-                    RatesSum = Convert.ToInt32(reader["RatesSum"]),
                     MainImageUri = Convert.ToString(reader["MainImageUri"])!
                 };
                 products.Add(product);

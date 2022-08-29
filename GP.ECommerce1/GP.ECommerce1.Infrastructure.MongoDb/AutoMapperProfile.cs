@@ -30,6 +30,7 @@ public class AutoMapperProfile : Profile
 
         CreateMap<AddAddressCommand, MongoEntities.Address>();
 
+        
         CreateMap<CreateDiscountCommand, MongoEntities.Discount>();
 
         CreateMap<MongoEntities.Discount, Discount>()

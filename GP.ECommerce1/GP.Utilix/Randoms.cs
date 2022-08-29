@@ -91,7 +91,14 @@ public static class Randoms
     {
         var year = RandomInt(2000, 2022);
         var month = RandomInt(1, 12);
-        var day = RandomInt(1, 30);
+        
+        var day = RandomInt(1, month == 2 ? 28 : 30);
         return new DateTime(year, month, day);
+    }
+
+    public static bool RandomBoolean()
+    {
+        const int threshHold = 3;
+        return Randoms.RandomInt(1, 6) > threshHold;
     }
 }

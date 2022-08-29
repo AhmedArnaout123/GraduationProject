@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using GP.ECommerce1.Core.Application.Orders.Commands.CreateOrder;
+using GP.ECommerce1.Core.Domain;
 using GP.Utilix;
 using MediatR;
 
@@ -24,20 +25,19 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Res
         try
         {
             command.Transaction = transaction;
-            command.CommandText = "INSERT INTO Orders Values(@Id,@Date,@Subtotal,@CustomerId,@StatusId)";
+            command.CommandText = "INSERT INTO Orders Values(@Id,@Date,@Status,@CustomerId,@AddressId)";
             
             command.Parameters.AddWithValue("@Id", request.Id);
             command.Parameters.AddWithValue("@Date", request.Date);
-            command.Parameters.AddWithValue("@Subtotal", request.Subtotal);
             command.Parameters.AddWithValue("@CustomerId", request.CustomerId);
-            command.Parameters.AddWithValue("@StatusId", request.StatusId);
+            command.Parameters.AddWithValue("@Status", request.Status.ToText());
+            command.Parameters.AddWithValue("@AddressId", request.Address.Id);
             await command.ExecuteNonQueryAsync();
 
             command.Parameters.Clear();
-            command.CommandText = "INSERT INTO Orders_Products Values(@ProductName, @ProductPrice, @ProductSubtotal,@Quantity,@OrderId,@ProductId,@DiscountId)";
+            command.CommandText = "INSERT INTO Orders_Products Values(@ProductName, @ProductPrice,@Quantity,@OrderId,@ProductId,@DiscountId)";
             command.Parameters.Add("@ProductName", SqlDbType.NVarChar);
             command.Parameters.Add("@ProductPrice", SqlDbType.Real);
-            command.Parameters.Add("@ProductSubtotal", SqlDbType.Real);
             command.Parameters.Add("@Quantity", SqlDbType.Int);
             command.Parameters.Add("@OrderId", SqlDbType.UniqueIdentifier);
             command.Parameters.Add("@ProductId", SqlDbType.UniqueIdentifier);
@@ -46,10 +46,9 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Res
             {
                 command.Parameters["@ProductName"].Value = item.ProductName;
                 command.Parameters["@ProductPrice"].Value = item.ProductPrice;
-                command.Parameters["@ProductSubtotal"].Value = item.ProductSubtotal;
                 command.Parameters["@Quantity"].Value = item.Quantity;
                 command.Parameters["@ProductId"].Value = item.ProductId;
-                command.Parameters["@DiscountId"].Value = item.DiscountId;
+                command.Parameters["@DiscountId"].Value = (object) item.Discount?.Id ?? DBNull.Value;
                 command.Parameters["@OrderId"].Value = request.Id;
                 await command.ExecuteNonQueryAsync();
             }

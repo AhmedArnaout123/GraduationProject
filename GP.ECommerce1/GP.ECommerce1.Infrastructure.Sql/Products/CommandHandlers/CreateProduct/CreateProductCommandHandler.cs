@@ -33,7 +33,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
             command.Parameters.AddWithValue("@MainImageUri", request.MainImageUri);
             command.Parameters.AddWithValue("@Price", request.Price);
             command.Parameters.AddWithValue("@CategoryId", request.CategoryId);
-            command.Parameters.AddWithValue("@DiscountId", (object) request.DiscountId! ?? DBNull.Value);
+            command.Parameters.AddWithValue("@DiscountId", (object) request.Discount?.Id! ?? DBNull.Value);
             await command.ExecuteNonQueryAsync();
 
             command.Parameters.Clear();

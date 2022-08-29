@@ -48,7 +48,7 @@ public class
                     Name = Convert.ToString(reader["Name"]),
                     Price = Convert.ToDouble(reader["Price"]),
                     MainImageUri = Convert.ToString(reader["MainImageUri"]),
-                    Discount = Convert.ToDouble(reader["Discount"])
+                    DiscountPercentage = Convert.ToInt32(reader["Discount"])
                 };
                 entries.Add(entry);
             }

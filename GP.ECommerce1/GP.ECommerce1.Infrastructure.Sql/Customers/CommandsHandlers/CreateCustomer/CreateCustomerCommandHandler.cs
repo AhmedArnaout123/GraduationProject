@@ -16,14 +16,14 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
     public async Task<Result> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         var result = new Result{IsSuccess = true};
-        string stmt = "INSERT INTO Customers Values(@Id,@FirstName,@LastName,@PhoneNumber,@Email,@PasswordHash)";
+        string stmt = "INSERT INTO Customers Values(@Id,@FirstName,@LastName,@PhoneNumber,@Email,@Password)";
         var command = new SqlCommand(stmt, _sqlConnection);
         command.Parameters.AddWithValue("@Id", request.Id);
         command.Parameters.AddWithValue("@FirstName", request.FirstName);
         command.Parameters.AddWithValue("@LastName", request.LastName);
         command.Parameters.AddWithValue("@PhoneNumber", request.PhoneNumber);
         command.Parameters.AddWithValue("@Email", request.Email);
-        command.Parameters.AddWithValue("@PasswordHash", request.Password);
+        command.Parameters.AddWithValue("@Password", request.Password);
         try
         {
             _sqlConnection.Open();

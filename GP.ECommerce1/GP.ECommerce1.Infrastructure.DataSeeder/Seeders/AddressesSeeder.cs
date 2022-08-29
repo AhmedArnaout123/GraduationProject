@@ -20,20 +20,22 @@ public class AddressesSeeder
     {
         Console.WriteLine("Seeding Addresses....");
         var customers = await _dataSeedingHelper.GetAllCustomers();
-        for (int i = 0; i < count; i++)
+        foreach (var customer in customers)
         {
-            var command = new AddAddressCommand
+            for (int i = 0; i < Randoms.RandomInt(1,5); i++)
             {
-                City = Randoms.RandomString(Randoms.RandomInt(4, 7)),
-                Country = Randoms.RandomString(Randoms.RandomInt(4, 7)),
-                Id = Guid.NewGuid(),
-                State = Randoms.RandomString(Randoms.RandomInt(5, 9)),
-                Street1 = Randoms.RandomSentence(Randoms.RandomInt(5, 8)),
-                Street2 = Randoms.RandomSentence(Randoms.RandomInt(5, 8)),
-                CustomerId = customers[Randoms.RandomInt(customers.Count)].Id
-            };
-            await _mediator.Send(command);
-            Console.WriteLine(i);
+                var command = new AddAddressCommand
+                {
+                    City = Randoms.RandomString(Randoms.RandomInt(4, 7)),
+                    Country = Randoms.RandomString(Randoms.RandomInt(4, 7)),
+                    Id = Guid.NewGuid(),
+                    State = Randoms.RandomString(Randoms.RandomInt(5, 9)),
+                    Street1 = Randoms.RandomSentence(Randoms.RandomInt(5, 8)),
+                    Street2 = Randoms.RandomSentence(Randoms.RandomInt(5, 8)),
+                    CustomerId = customer.Id
+                };
+                await _mediator.Send(command);
+            }
         }
         Console.WriteLine("Seeding Addresses Finished....");
     }

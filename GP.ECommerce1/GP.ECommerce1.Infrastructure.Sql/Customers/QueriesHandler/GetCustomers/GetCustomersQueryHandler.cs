@@ -27,6 +27,7 @@ public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, Resul
             var reader = await command.ExecuteReaderAsync(cancellationToken);
             while (reader.Read())
             {
+                List<Address> addresses = new();
                 var customer = new Customer
                 {
                     Id = Guid.Parse(Convert.ToString(reader["Id"])!),
@@ -35,6 +36,24 @@ public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, Resul
                     Email = Convert.ToString(reader["Email"])!,
                     PhoneNumber = Convert.ToString(reader["PhoneNumber"])!,
                 };
+                var stmt2 = "SELECT * FROM Addresses WHERE CustomerId=@CustomerId";
+                var command2 = new SqlCommand(stmt2, _sqlConnection);
+                command2.Parameters.AddWithValue("CustomerId", customer.Id);
+                var reader2 = await command2.ExecuteReaderAsync();
+                while (reader2.Read())
+                {
+                    var address = new Address()
+                    {
+                        City = Convert.ToString(reader2["City"])!,
+                        Country = Convert.ToString(reader2["Country"])!,
+                        State = Convert.ToString(reader2["State"])!,
+                        Street1 = Convert.ToString(reader2["Street1"])!,
+                        Street2 = Convert.ToString(reader2["Street2"])!,
+                        Id = Guid.Parse(Convert.ToString(reader2["Id"])!),
+                        CustomerId = customer.Id
+                    };
+                    customer.Addresses.Add(address);
+                }
                 customers.Add(customer);
             }
 

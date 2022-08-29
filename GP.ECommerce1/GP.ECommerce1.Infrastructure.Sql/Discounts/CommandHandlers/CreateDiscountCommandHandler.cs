@@ -17,10 +17,11 @@ public class CreateDiscountCommandHandler : IRequestHandler<CreateDiscountComman
     {
         var result = new Result{IsSuccess = true};
         
-        string stmt = "INSERT INTO Discounts Values(@Id, @Percentage)";
+        string stmt = "INSERT INTO Discounts Values(@Id, @Percentage, @Description)";
         var command = new SqlCommand(stmt, _sqlConnection);
         command.Parameters.AddWithValue("@Id", request.Id);
         command.Parameters.AddWithValue("@Percentage", request.Percentage);
+        command.Parameters.AddWithValue("@Description", request.Description);
         try
         {
             _sqlConnection.Open();

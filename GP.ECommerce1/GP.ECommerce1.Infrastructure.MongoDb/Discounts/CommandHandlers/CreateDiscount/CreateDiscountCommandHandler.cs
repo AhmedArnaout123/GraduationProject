@@ -23,8 +23,8 @@ public class CreateDiscountCommandHandler : IRequestHandler<CreateDiscountComman
         var result = new Result {IsSuccess = true};
         try
         {
-            var collection = _database.GetCollection<Discount>(Constants.DiscountsCollectionName);
-            var discount = _mapper.Map<Discount>(request);
+            var collection = _database.GetCollection<MongoEntities.Discount>(Constants.DiscountsCollectionName);
+            var discount = _mapper.Map<MongoEntities.Discount>(request);
 
             await collection.InsertOneAsync(discount, null, cancellationToken);
         }

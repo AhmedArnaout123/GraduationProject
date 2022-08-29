@@ -21,20 +21,22 @@ public class OrdersSeeder
         Console.WriteLine("Seeding Orders....");
         var customers = await _dataSeedingHelper.GetAllCustomers();
         var products = await _dataSeedingHelper.GetAllProducts();
-        var statues = await _dataSeedingHelper.GetAllOrderStatuses();
         
         for (int i = 0; i < count; i++)
         {
             var id = Guid.NewGuid();
             var items = GetOrderItems(id, products);
+            var customer = customers[Randoms.RandomInt(customers.Count)];
             var command = new CreateOrderCommand
             {
                 Date = Randoms.RandomDate(),
                 Id = id,
-                CustomerId = customers[Randoms.RandomInt(customers.Count)].Id,
-                StatusId = statues[Randoms.RandomInt(statues.Count)].Id,
+                CustomerId = customer.Id,
+                Status = Enum.GetValues<OrderStatus>()[Randoms.RandomInt(2)],
                 Items = items,
-                Subtotal = items.Sum(o => o.ProductSubtotal)
+                Subtotal = items.Sum(o => o.ProductSubtotal),
+                Address = customer.Addresses[Randoms.RandomInt(customer.Addresses.Count)],
+                CustomerName = $"{customer.FirstName} {customer.LastName}"
             };
             await _mediator.Send(command);
             Console.WriteLine(i);
@@ -48,17 +50,14 @@ public class OrdersSeeder
         for (int i = 0; i < Randoms.RandomInt(1, 3); i++)
         {
             var product = products[Randoms.RandomInt(products.Count)];
-            var item = new OrderItem()
+            var item = new OrderItem
             {
                 Quantity = Randoms.RandomQuantity(),
                 OrderId = orderId,
                 ProductName = product.Name,
-                DiscountId = product.DiscountId,
+                Discount = product.Discount,
                 ProductId = product.Id,
                 ProductPrice = product.Price,
-                ProductSubtotal = product.DiscountId == null
-                    ? product.Price
-                    : product.Price * product.DiscountPercentage!.Value / 100
             };
             items.Add(item);
         }

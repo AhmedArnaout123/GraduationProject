@@ -17,7 +17,7 @@ public class ProductsSeeder
         GenerateInitialData();
     }
 
-    public async Task Seed()
+    public async Task Seed(int count)
     {
         Console.WriteLine("Seeding Products....");
         var categories = await _dataSeedingHelper.GetAllCategories();
@@ -25,18 +25,21 @@ public class ProductsSeeder
 
         var stopWatch = new Stopwatch();
         stopWatch.Start();
-        for (int i = 1; i <= 1000; i++)
+        for (int i = 1; i <= count; i++)
         {
             var imagesUri = new List<string>();
             for(int j= 1; j <= Randoms.RandomInt(0, 8); j++)
             {
                 imagesUri.Add(_defaultImageUrl);
             }
+
+            var category = categories[Randoms.RandomInt(categories.Count)];
             var command = new CreateProductCommand
             {
                 Id = Guid.NewGuid(),
-                CategoryId = categories[Randoms.RandomInt(categories.Count)].Id,
-                DiscountId = discounts[Randoms.RandomInt(discounts.Count)].Id,
+                CategoryId = category.Id,
+                CategoryName = category.Name,
+                Discount = Randoms.RandomBoolean() ? discounts[Randoms.RandomInt(discounts.Count)] : null,
                 Description = _productsDescriptions[Randoms.RandomInt(_productsDescriptions.Length)],
                 Name = _productsNames[Randoms.RandomInt(_productsNames.Length)],
                 Price = Randoms.RandomPrice(),

@@ -31,6 +31,7 @@ public class GetDiscountsQueryHandler : IRequestHandler<GetDiscountsQuery, Resul
                 {
                     Id = Guid.Parse(Convert.ToString(reader["Id"])!),
                     Percentage = Convert.ToInt32(reader["Percentage"]),
+                    Description = Convert.ToString(reader["Description"])!,
                 };
                 discounts.Add(discount);
             }
