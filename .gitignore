@@ -309,3 +309,5 @@ GP.ECommerce1/.idea/.idea.GP.ECommerce1/.idea/.gitignore
 GP.ECommerce1/.idea/.idea.GP.ECommerce1/.idea/encodings.xml
 GP.ECommerce1/.idea/.idea.GP.ECommerce1/.idea/indexLayout.xml
 GP.ECommerce1/.idea/.idea.GP.ECommerce1/.idea/inspectionProfiles/Project_Default.xml
+GP.ECommerce1/GP.ECommerce1.Api.Sql/obj/Debug/net6.0/GP.ECommerce1.Api.Sql.dll
+GP.ECommerce1/GP.ECommerce1.Api.Sql/obj/Debug/net6.0/GP.ECommerce1.Api.Sql.pdb

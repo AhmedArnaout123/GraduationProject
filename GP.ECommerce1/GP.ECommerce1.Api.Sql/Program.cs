@@ -17,7 +17,7 @@ using (ServiceProvider serviceProvider = builder.Services.BuildServiceProvider()
 {
     var mediator = serviceProvider.GetRequiredService<IMediator>();
     var seedingManager = new DataSeedingManager(mediator);
-    await seedingManager.SeedOrders(2);
+    await seedingManager.SeedProducts(10000000);
 }
 
 var app = builder.Build();
