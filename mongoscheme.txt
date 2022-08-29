@@ -1,35 +1,90 @@
-Category{
-    "Id": " ",
-    "Name": " ",
-    "ParentId": " "
-}
+        
+        
+        Category{
+            "Id": " ",
+            "Name": " ",
+            "ParentId": " "
+        }
 
-Discount{
-    "Id": " ",
-    "Percentage": " ",
-    "Description": " ",
-}
+        Discount{
+            "Id": " ",
+            "Percentage": " ",
+            "Description": " ",
+        }
 
-Product
-{
-    "Id": " ",
-    "Name": " ",
-    "Price": " ",
-    "Description": " ",
-    "RatesSum": " ",
-    "Discount":{
-        "Id": " ",
-        "Percentage": " ",
-        "Description": " ",
-    },
-    "Images": [
-        "uri"
-    ],
-    "Category": {
-        "Id": " ",
-        "Name": " "
-    },
-    "LatestReviews": [
+        Product
+        {
+            "Id": " ",
+            "Name": " ",
+            "Price": " ",
+            "Description": " ",
+            "RatesSum": " ",
+            "Discount":{
+                "Id": " ",
+                "Percentage": " ",
+                "Description": " ",
+            },
+            "Images": [
+                "uri"
+            ],
+            "CategoryId": " ",
+            "CategoryName": " ",
+            "LatestReviews": [
+                {
+                    "Id": " ",
+                    "CustoemerId": " ",
+                    "CustomerName": " ",
+                    "Rate": " ",
+                    "Comment": " ",   
+                }
+            ]
+        }
+
+        Customer
+        {
+            "FirstName": " ",
+            "LastName": " ",
+            "Password": " ",
+            "Email": " ",
+            "PhoneNumber": " ",
+            "Addresses": [
+                {
+                    "Country": " ",
+                    "State": " ",
+                    "City": " ",
+                    "Street1": " ",
+                    "Street2": " "
+                }
+            ],
+        }
+
+        WishList
+        {
+            "CustoemerId": " "
+            "Items":[
+                {
+
+                "ProductId": " ",
+                "ProductName": " ",
+                "ProductPrice": " ",
+                }
+            ]
+        }
+
+        Cart
+        {
+            "CustomerId": " "
+            "Items": [
+                {
+                "ProductId": " ",
+                "ProductName": " ",
+                "ProductPrice": " ",
+                "Quntity": " "
+                }
+            ]
+        }
+
+        Review
         {
             "Id": " ",
             "CustoemerId": " ",
@@ -37,76 +92,21 @@ Product
             "Rate": " ",
             "Comment": " ",   
         }
-    ]
-}
 
-Customer
-{
-    "FirstName": " ",
-    "LastName": " ",
-    "Password": " ",
-    "Email": " ",
-    "PhoneNumber": " ",
-    "Addresses": [
+        Order
         {
-            "Country": " ",
-            "State": " ",
-            "City": " ",
-            "Street1": " ",
-            "Street2": " "
+            "Id": " ",
+            "CustomerId": " ",
+            "Date": " ",
+            "Status": " ",
+            "Subtotal": " ",
+            "Items": [
+                {
+                    "ProductName": " ",
+                    "ProductPrice": " ",
+                    "ProductSubTotal": " ",
+                    "DiscountPercentage": " ",
+                    "Quntity": " ",            
+                }
+            ]
         }
-    ],
-}
-
-WishList
-{
-    "CustoemerId": " "
-    "Items":[
-        {
-
-        "ProductId": " ",
-        "ProductName": " ",
-        "ProductPrice": " ",
-        }
-    ]
-}
-
-Cart
-{
-    "CustomerId": " "
-    "Items": [
-        {
-        "ProductId": " ",
-        "ProductName": " ",
-        "ProductPrice": " ",
-        "Quntity": " "
-        }
-    ]
-}
-
-Review
-{
-    "Id": " ",
-    "CustoemerId": " ",
-    "CustomerName": " ",
-    "Rate": " ",
-    "Comment": " ",   
-}
-
-Order
-{
-    "Id": " ",
-    "CustomerId": " ",
-    "Date": " ",
-    "Status": " ",
-    "Subtotal": " ",
-    "Items": [
-        {
-            "ProductName": " ",
-            "ProductPrice": " ",
-            "ProductSubTotal": " ",
-            "DiscountPercentage": " ",
-            "Quntity": " ",            
-        }
-    ]
-}
