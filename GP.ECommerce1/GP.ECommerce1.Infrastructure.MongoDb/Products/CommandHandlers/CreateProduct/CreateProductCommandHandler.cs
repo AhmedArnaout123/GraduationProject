@@ -15,7 +15,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
     public CreateProductCommandHandler(IMongoClient client, IMapper mapper)
     {
         _mapper = mapper;
-        _database = client.GetDatabase(Constants.DatabaseName);
+        _database = client.GetDatabase(Constants.GetDatabaseName());
     }
     
     public async Task<Result> Handle(CreateProductCommand request, CancellationToken cancellationToken)

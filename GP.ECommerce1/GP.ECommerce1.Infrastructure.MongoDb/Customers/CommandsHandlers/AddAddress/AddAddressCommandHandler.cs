@@ -15,7 +15,7 @@ public class AddAddressCommandHandler : IRequestHandler<AddAddressCommand, Resul
     public AddAddressCommandHandler(IMongoClient client, IMapper mapper)
     {
         _mapper = mapper;
-        _database = client.GetDatabase(Constants.DatabaseName);
+        _database = client.GetDatabase(Constants.GetDatabaseName());
     }
     
     public async Task<Result> Handle(AddAddressCommand request, CancellationToken cancellationToken)

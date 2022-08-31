@@ -1,4 +1,7 @@
-﻿
+﻿@using GP.ECommerce1.BlazorWebApp.Services.ClientServices
+
+@inject CategoriesClientService _categoriesClientService
+
 <nav class="top-row navbar  navbar-expand-lg  p-0" style="background-color: #086a78">
     <a href="#" class="navbar-brand " style="width: 16%">
         <img class="logoImg" src="Logo.png" height="29" alt="GBV">
@@ -10,22 +13,14 @@
         <!-- pc nav -->
         <ul class="navbar-nav d-none d-lg-flex" style="color: white">
             <NavMenuItem Href="#" IconClass="oi oi-home" ToggleNavMenu="ToggleNavMenu" Text="Home"></NavMenuItem>
-            
+            <NavMenuItem Href="Catalog" IconClass="oi oi-list" ToggleNavMenu="ToggleNavMenu" Text="Catalog"></NavMenuItem>
             <DropdownNavMenuItem IconClass="oi oi-list" Text="Schäden" ToggleNavMenu="ToggleNavMenu"
                                              Items="DamagesList"/>
             <DropdownNavMenuItem IconClass="oi oi-list" Text="Stammdaten" ToggleNavMenu="ToggleNavMenu"
                                  Items="MasterDataList"/>
             <DropdownNavMenuItem IconClass="fas fa-print" Text="Konfiguration" ToggleNavMenu="ToggleNavMenu"
                                  Items="ConfigsList"/>
-            
-           
-       
-            
-          
-
         </ul>
-
-
     </div>
 </nav>
 
@@ -54,11 +49,6 @@
     private DateTime SelectedDate { get; set; } = DateTime.Now;
 
     private DateTime MinDate { get; set; }
-
-    protected override async Task OnInitializedAsync() {
-      
-        await base.OnInitializedAsync();
-    }
 
     private void ToggleNavMenu() {
         _collapseNavMenu = !_collapseNavMenu;

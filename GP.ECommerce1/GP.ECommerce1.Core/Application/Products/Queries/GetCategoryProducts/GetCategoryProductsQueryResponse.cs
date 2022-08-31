@@ -1,7 +1,10 @@
-﻿namespace GP.ECommerce1.Core.Application.Products.Queries.GetCategoryProducts;
+﻿using GP.Utilix;
+
+namespace GP.ECommerce1.Core.Application.Products.Queries.GetCategoryProducts;
 
 public class GetCategoryProductsQueryResponse
 {
+    public PaginationInfo? PaginationInfo { get; set; }
     public List<GetCategoryProductsQueryResponseEntry> Products { get; set; } = new();
 }
 

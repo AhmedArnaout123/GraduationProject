@@ -11,7 +11,7 @@ public class GetCategoryProductsQueryHandler : IRequestHandler<GetCategoryProduc
 
     public GetCategoryProductsQueryHandler(IMongoClient client)
     {
-        _database = client.GetDatabase(Constants.DatabaseName);
+        _database = client.GetDatabase(Constants.GetDatabaseName());
     }
 
     public async Task<Result<GetCategoryProductsQueryResponse>> Handle(GetCategoryProductsQuery request, CancellationToken cancellationToken)
@@ -23,7 +23,10 @@ public class GetCategoryProductsQueryHandler : IRequestHandler<GetCategoryProduc
             var filter =
                 new FilterDefinitionBuilder<MongoEntities.Product>().Eq(p => p.CategoryId,
                     request.CategoryId);
-            var products =  await collection.Find(filter).ToListAsync(cancellationToken);
+            var products =  await collection.Find(filter)
+                .Skip(request.PaginationParameters.PageSize * request.PaginationParameters.PageIndex)
+                .Limit(request.PaginationParameters.PageSize)
+                .ToListAsync(cancellationToken);
 
             List<GetCategoryProductsQueryResponseEntry> entries = new();
             foreach (var product in products)

@@ -15,7 +15,7 @@ public class CategoriesSeeder
 
     public async Task SeedSql()
     {
-        Console.WriteLine("Seeding Categories to Sql Server");
+        Console.WriteLine("Seeding Categories");
         List<Category> categories = new();
         foreach (var item in _rawData)
         {
@@ -23,7 +23,7 @@ public class CategoriesSeeder
             {
                 Id = Guid.NewGuid(),
                 Name = item["cat_name"],
-                ParentId = item["cat_parent"] == "0" ? null : categories[int.Parse(item["cat_parent"])].Id
+                ParentId = item["cat_parent"] == "0" ? null : categories[int.Parse(item["cat_parent"]) - 1].Id
             };
             categories.Add(category);
         }

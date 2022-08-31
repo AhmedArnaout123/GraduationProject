@@ -12,7 +12,7 @@ public class AddProductToWishListCommandHandler : IRequestHandler<AddProductToWi
     
     public AddProductToWishListCommandHandler(IMongoClient client)
     {
-        _database = client.GetDatabase(Constants.DatabaseName);
+        _database = client.GetDatabase(Constants.GetDatabaseName());
     }
     
     public async Task<Result> Handle(AddProductToWishListCommand request, CancellationToken cancellationToken)

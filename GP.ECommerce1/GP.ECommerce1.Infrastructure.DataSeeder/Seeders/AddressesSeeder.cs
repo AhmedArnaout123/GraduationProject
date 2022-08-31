@@ -16,7 +16,7 @@ public class AddressesSeeder
         _dataSeedingHelper = dataSeedingHelper;
     }
 
-    public async Task Seed(int count = 1000)
+    public async Task Seed()
     {
         Console.WriteLine("Seeding Addresses....");
         var customers = await _dataSeedingHelper.GetAllCustomers();

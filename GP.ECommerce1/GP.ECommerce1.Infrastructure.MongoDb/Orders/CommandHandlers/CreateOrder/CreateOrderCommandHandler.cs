@@ -14,7 +14,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Res
     public CreateOrderCommandHandler(IMongoClient client, IMapper mapper)
     {
         _mapper = mapper;
-        _database = client.GetDatabase(Constants.DatabaseName);
+        _database = client.GetDatabase(Constants.GetDatabaseName());
     }
     
     public async Task<Result> Handle(CreateOrderCommand request, CancellationToken cancellationToken)

@@ -1,0 +1,104 @@
+﻿@page "/Catalog"
+
+@using GP.ECommerce1.Core.Domain
+@using GP.ECommerce1.BlazorWebApp.Services.ClientServices
+@using GP.ECommerce1.Core.Application.Products.Queries.GetCategoryProducts
+
+@inject CategoriesClientService _categoriesClientService
+@inject ProductsClientService _productsClientService
+@inject IToastService _toastService
+
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="ml-3">
+            <h2>Catalog</h2>
+        </div>
+    </div>
+    <div class="row mt-1 mb-3">
+        <div class="col-3 dxbs-preventsel">
+            <DxAccordion ExpandMode="AccordionExpandMode.Multiple"
+                         ExpandCollapseAction="AccordionExpandCollapseAction.HeaderClick">
+                <Items>
+                    @foreach (var parent in ParentCategories) {
+                        <DxAccordionItem Text="@(parent.Name)" Expanded="true">
+                            <ContentTemplate>
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var child in GetChildrenOfCategory(parent)) {
+                                        <a 
+                                            role="button"
+                                            class="list-group-item list-group-item-action @(child == SelectedCategory ? "active" : "")"
+                                            @onclick="@(() => UpdateSelectedCategory(child))">
+                                            @child.Name
+                                        </a>
+                                    }
+                                </ul>
+                            </ContentTemplate>
+                        </DxAccordionItem>
+                    }
+                </Items>
+            </DxAccordion>
+        </div>
+        <div class="col-9 justify-content-center">
+            @foreach (var productEntry in CategoryProductsResponse.Products) {
+                <div class="card col-3 d-inline-block m-3" >
+                    <img src="@productEntry.MainImageUri" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@productEntry.Name</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <span>Price: </span> @productEntry.Price
+                        </li>
+                        <li class="list-group-item">
+                            <span>Discount: </span> @productEntry.DiscountValue
+                        </li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">See Details...</a>
+                    </div>
+                </div>
+            }            
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<Category> Categories { get; set; } = new();
+
+    private IEnumerable<Category> ParentCategories => Categories.Where(c => c.ParentId == null);
+
+    private Category? SelectedCategory { get; set; }
+
+    private GetCategoryProductsQueryResponse CategoryProductsResponse { get; set; } = new();
+
+    protected override async Task OnInitializedAsync() {
+        var result = await _categoriesClientService.GetCategories();
+        if (result.IsSuccess)
+            Categories = result.Value;
+        else
+            _toastService.ShowError(result.Error);
+        await InvokeAsync(StateHasChanged);
+        await base.OnInitializedAsync();
+    }
+
+    private IEnumerable<Category> GetChildrenOfCategory(Category category) {
+        return Categories.Where(c => c.ParentId != null && c.ParentId == category.Id);
+    }
+
+    private void UpdateSelectedCategory(Category category) {
+        SelectedCategory = category;
+        StateHasChanged();
+        Task.Run(() => GetCategoryProducts(category.Id));
+    }
+
+    private async Task GetCategoryProducts(Guid categoryId) {
+        var query = new GetCategoryProductsQuery {CategoryId = categoryId};
+        var result = await _productsClientService.GetCategoryProducts(query);
+        if (result.IsSuccess)
+            CategoryProductsResponse = result.Value;
+        else
+            _toastService.ShowError(result.Error);
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

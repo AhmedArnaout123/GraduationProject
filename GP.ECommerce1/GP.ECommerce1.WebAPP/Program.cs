@@ -1,8 +1,4 @@
 using System.Globalization;
-using System.Runtime.InteropServices;
-using DevExpress.Blazor.Reporting;
-using DevExpress.CrossPlatform.Printing.DrawingEngine;
-using DevExpress.Printing.CrossPlatform;
 using GP.ECommerce1.BlazorWebApp.AppConfiguration;
 
 CultureInfo.DefaultThreadCurrentCulture =
@@ -28,11 +24,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-    CustomEngineHelper.RegisterCustomDrawingEngine(
-        typeof(
-            PangoCrossPlatformEngine
-        ));
 app.UseStaticFiles();
 app.UseRouting();
 

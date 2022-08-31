@@ -1,0 +1,52 @@
+﻿@using GP.ECommerce1.BlazorWebApp.Services.ClientServices
+@using GP.ECommerce1.Core.Domain
+
+@inject CategoriesClientService _categoriesClientService
+@inject IToastService _toastService
+
+<li class="nav-item dropdown px-3" id="myDropdown" b-6s7gf25lzd b-seovf0n9u0>
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-config" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="row justify-content-center">
+            <div class="col text-center">
+                <i class="fa fa-list"></i>
+            </div>
+        </div>
+        Categories
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-config">
+        @foreach (var parentCategory in ParentCategories) {
+            <li>
+                <a class="dropdown-item text-primary" href="#"> @parentCategory.Name &raquo; </a>
+                <ul class="submenu dropdown-menu">
+                    @foreach (var childCategory in GetChildrenOfCategory(parentCategory)) {
+                        <li>
+                            <a class="dropdown-item text-primary" href="#">Submenu item 1</a>
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+</li>
+
+@code {
+
+    private List<Category> Categories { get; set; } = new();
+
+    private IEnumerable<Category> ParentCategories => Categories.Where(c => c.ParentId == null);
+
+    protected override async Task OnInitializedAsync() {
+        var result = await _categoriesClientService.GetCategories();
+        if (result.IsSuccess)
+            Categories = result.Value;
+        else
+            _toastService.ShowError(result.Error);
+        await base.OnInitializedAsync();
+    }
+
+    private IEnumerable<Category> GetChildrenOfCategory(Category category) {
+        var c = Categories.Where(c => c.ParentId != null && c.ParentId == category.Id).ToList();
+        return Categories.Where(c => c.ParentId != null && c.ParentId == category.Id);
+    }
+
+}

@@ -11,5 +11,7 @@ public class Result
 
 public class Result<T> : Result
 {
+    public PaginationInfo? PaginationInfo { get; set; }
+    
     public T Value { get; set; }
 }

@@ -12,7 +12,7 @@ public class AddProductToShoppingCartCommandHandler : IRequestHandler<AddProduct
     
     public AddProductToShoppingCartCommandHandler(IMongoClient client)
     {
-        _database = client.GetDatabase(Constants.DatabaseName);
+        _database = client.GetDatabase(Constants.GetDatabaseName());
     }
     
     public async Task<Result> Handle(AddProductToShoppingCartCommand request, CancellationToken cancellationToken)

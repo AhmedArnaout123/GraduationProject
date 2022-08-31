@@ -28,12 +28,13 @@ public class ProductsSeeder
         for (int i = 1; i <= count; i++)
         {
             var imagesUri = new List<string>();
-            for(int j= 1; j <= Randoms.RandomInt(0, 8); j++)
+            for (int j = 1; j <= Randoms.RandomInt(0, 8); j++)
             {
                 imagesUri.Add(_defaultImageUrl);
             }
 
-            var category = categories[Randoms.RandomInt(categories.Count)];
+            var childCategories = categories.Where(c => c.ParentId != null).ToList();
+            var category = childCategories[Randoms.RandomInt(childCategories.Count)];
             var command = new CreateProductCommand
             {
                 Id = Guid.NewGuid(),
@@ -48,12 +49,13 @@ public class ProductsSeeder
             };
             await _mediator.Send(command);
             Console.WriteLine(i);
-        }   
+        }
+
         stopWatch.Stop();
         Console.WriteLine("Seeding Products Succeeded");
-        Console.WriteLine($"Times Consumed: {stopWatch}");
+        Console.WriteLine($"Time Consumed: {stopWatch}");
     }
-    
+
     private string[] _productsNames = new String[100];
     private string[] _productsDescriptions = new string[100];
     private string _defaultImageUrl = "https://www.themelocation.com/wp-content/uploads/2015/01/woocommerce113.jpg";
@@ -64,7 +66,7 @@ public class ProductsSeeder
         {
             _productsNames[i] = Randoms.RandomSentence(Randoms.RandomInt(2, 10));
         }
-        
+
         for (int i = 0; i < _productsDescriptions.Length; i++)
         {
             _productsDescriptions[i] = Randoms.RandomDescription();

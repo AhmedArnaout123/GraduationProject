@@ -1,6 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using Blazored.Toast;
-using DevExpress.Blazor.Reporting;
+using GP.ECommerce1.BlazorWebApp.Services.ClientServices;
+
 namespace GP.ECommerce1.BlazorWebApp.AppConfiguration;
 
 public static class RegisterServices
@@ -15,6 +16,11 @@ public static class RegisterServices
 
     private static void AddHttpClients(IServiceCollection services, AppSettings appSettings)
     {
+        var apiUrl = Environment.GetEnvironmentVariable("API_URL");
+        services.AddHttpClient<CategoriesClientService>(
+            client => client.BaseAddress = new Uri(apiUrl!));
+        services.AddHttpClient<ProductsClientService>(
+            client => client.BaseAddress = new Uri(apiUrl!));
     }
 
     private static void AddDevExpress(this IServiceCollection services)

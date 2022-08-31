@@ -15,7 +15,7 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
     public CreateCustomerCommandHandler(IMongoClient client, IMapper mapper)
     {
         _mapper = mapper;
-        _database = client.GetDatabase(Constants.DatabaseName);
+        _database = client.GetDatabase(Constants.GetDatabaseName());
     }
     
     public async Task<Result> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)

@@ -16,7 +16,7 @@ public class GetOrdersQueryHandler : IRequestHandler<GetOrdersQuery, Result<List
     public GetOrdersQueryHandler(IMongoClient client, IMapper mapper)
     {
         _mapper = mapper;
-        _database = client.GetDatabase(Constants.DatabaseName);
+        _database = client.GetDatabase(Constants.GetDatabaseName());
     }
 
     public async Task<Result<List<Order>>> Handle(GetOrdersQuery request, CancellationToken cancellationToken)

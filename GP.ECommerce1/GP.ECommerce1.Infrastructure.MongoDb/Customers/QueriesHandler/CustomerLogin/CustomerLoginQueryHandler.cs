@@ -15,7 +15,7 @@ public class CustomerLoginQueryHandler : IRequestHandler<CustomerLoginQuery, Res
     public CustomerLoginQueryHandler(IMongoClient client, IMapper mapper)
     {
         _mapper = mapper;
-        _database = client.GetDatabase(Constants.DatabaseName);
+        _database = client.GetDatabase(Constants.GetDatabaseName());
     }    
     
     public async Task<Result<Customer>> Handle(CustomerLoginQuery request, CancellationToken cancellationToken)

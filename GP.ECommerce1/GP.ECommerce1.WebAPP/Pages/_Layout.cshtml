@@ -7,6 +7,15 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>
+        @{
+            var title = "title";
+            var dbType = Environment.GetEnvironmentVariable("DB_TYPE");
+            if (dbType != null)
+                title = dbType;
+        }
+        @title
+    </title>
     <base href="~/"/>
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="css/bootstrap/bootstrapdark.min.css"/>
@@ -34,5 +43,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
 <script src="_framework/blazor.server.js"></script>
+<script src="js/site.js"></script>
 </body>
 </html>

@@ -16,7 +16,7 @@ public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, Result<
     public GetProductsQueryHandler(IMongoClient client, IMapper mapper)
     {
         _mapper = mapper;
-        _database = client.GetDatabase(Constants.DatabaseName);
+        _database = client.GetDatabase(Constants.GetDatabaseName());
     }
 
     public async Task<Result<List<Product>>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
