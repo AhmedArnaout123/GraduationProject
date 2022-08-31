@@ -1,0 +1,41 @@
+.logoImg{
+    margin-left: 16%;
+    width: 15%;
+    height: 10%;
+}
+
+.nav-item ::deep a {
+    padding-bottom: 0;
+    margin-top: 8px;
+    color: #ffffff;
+}
+
+.nav-item ::deep .balken {
+    margin-top: 8px;
+}
+
+.nav-item ::deep a.active .balken {
+    background-color: #ffffff;
+    color: #ffffff;
+}
+nav-item ::deep .balken:hover {
+    color: #ffffff;
+    background-color: #5e94e7;
+}
+.nav-item ::deep a.active {
+    color: #ffffff;
+}
+.nav-item ::deep a:hover {
+    color: #0E4598;
+    background-color: #e8e8e8;
+}
+
+.balken{
+    height: 5px;
+}
+
+
+.dropdown-item::deep a.active{
+    background-color: #0E4598;
+}
+

@@ -1,0 +1,31 @@
+﻿<li class="nav-item px-3" @onclick="ToggleNavMenu" b-6s7gf25lzd style="color: white">
+    <NavLink class="nav-link" href="@Href">
+        <div class="row justify-content-center" b-6s7gf25lzd>
+            <div class="col text-center" b-6s7gf25lzd>
+                <span class="@IconClass" aria-hidden="true" b-6s7gf25lzd></span>
+            </div>
+        </div>
+        <div class="row justify-content-center" b-6s7gf25lzd>
+            <div class="col" b-6s7gf25lzd>
+                @Text
+            </div>
+        </div>
+        <div class="row pb-0 balken  justify-content-center" b-6s7gf25lzd>
+        </div>
+    </NavLink>
+</li>
+
+@code {
+
+    [Parameter]
+    public EventCallback ToggleNavMenu { get; set; }
+
+    [Parameter]
+    public string IconClass { get; set; } = "";
+
+    [Parameter]
+    public string Text { get; set; } = "";
+
+    [Parameter]
+    public string Href { get; set; } = "";
+}

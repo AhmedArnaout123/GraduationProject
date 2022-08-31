@@ -1,0 +1,59 @@
+﻿@using Blazored.Toast.Configuration
+@inherits LayoutComponentBase
+<div class="page">
+    <div class="main">
+        <BlazoredToasts Position="ToastPosition.BottomRight"
+                        Timeout="30"  
+                        IconType="IconType.FontAwesome"
+                        RemoveToastsOnNavigation="true"
+                        SuccessClass="success-toast-override"
+                  />
+        <div class="container-fluid border-bottom border-white" style="padding-top: 0; padding-left: 0;padding-right: 0">
+            <NavMenu></NavMenu>
+        </div>
+        <div class="content mb-1" style="padding-top: 0; padding-left: 0;padding-right: 0">
+            <div class="container-fluid pb-4" style="  background: white;padding-top: 0; padding-left: 0;padding-right: 0; ">
+                @Body
+            </div>
+        </div>
+        <div class="footer mt-5">
+            <div class="container">
+                <div class="row p-2">
+                    <div class="col-8">
+                        @{
+                            var currentYear = DateTime.Now.Year;
+                        }
+                        © @currentYear soft-park GmbH
+                    </div>
+                    <div class="col text-right">
+
+
+                        <div class="">
+                            Impressum
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="vl pl-3">
+                            Datenshutz
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="vl pl-3">
+                            AGB
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code{
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+}

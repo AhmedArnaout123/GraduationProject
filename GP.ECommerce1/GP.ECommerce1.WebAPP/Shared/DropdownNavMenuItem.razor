@@ -1,0 +1,41 @@
+﻿<li class="nav-item dropdown px-3" b-6s7gf25lzd>
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink-config" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="row justify-content-center">
+            <div class="col text-center">
+                <i class="@IconClass"></i>
+            </div>
+        </div>
+        @Text
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink-config">
+
+        @foreach(var (text, link) in Items)
+        {
+            <NavLink class="nav-link" href="@link" Match="NavLinkMatch.Prefix">
+                <div class="row justify-content-center text-primary">
+                    <div class="col">
+                        @text
+                    </div>
+                </div>
+            </NavLink>
+        }
+
+    </div>
+</li>
+
+@code {
+
+    [Parameter]
+    public EventCallback ToggleNavMenu { get; set; }
+
+    [Parameter]
+    public string IconClass { get; set; } = "";
+
+    [Parameter]
+    public string Text { get; set; } = "";
+
+    [Parameter]
+    public List<KeyValuePair<string, string>> Items { get; set; } = new();
+
+}
