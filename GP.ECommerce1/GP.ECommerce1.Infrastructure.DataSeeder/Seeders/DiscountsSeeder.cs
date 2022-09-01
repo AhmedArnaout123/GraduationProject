@@ -16,24 +16,24 @@ public class DiscountsSeeder
         _mediator = mediator;
     }
 
-    public async Task Seed()
+    public async Task Seed(string fileName="Discounts")
     {
         Console.WriteLine("Seeding Discounts....");
-        var percentages = new [] {10, 15, 20, 25, 30, 35, 40, 50, 60, 70};
-        foreach (var percentage in percentages)
+        List<Discount> discounts = GetAllDiscounts(fileName);
+        foreach (var discount in discounts)
         {
             var command = new CreateDiscountCommand
             {
-                Id = Guid.NewGuid(),
-                Percentage = percentage,
-                Description = Randoms.RandomSentence(6)
+                Id = discount.Id,
+                Percentage = discount.Percentage,
+                Description = discount.Description
             };
             await _mediator.Send(command);
         }
         Console.WriteLine("Seeding Discounts Succeeded....");
     }
 
-    public static void GenerateAndStoreAsJson()
+    public static void GenerateAndStoreAsJson(string fileName="Discounts")
     {
         Console.WriteLine("Generating Discounts....");
         var percentages = new [] {10, 15, 20, 25, 30, 35, 40, 50, 60, 70};
@@ -49,16 +49,16 @@ public class DiscountsSeeder
             discounts.Add(command);
         }
 
-        Task.Run(() => FilesHelper.WriteToJsonFile("Discounts", discounts)).Wait();
+        Task.Run(() => FilesHelper.WriteToJsonFile(fileName, discounts)).Wait();
         Discounts = discounts;
         Console.WriteLine("Generating Discounts Succeeded....");
     }
     
-    public static List<Discount> GetAllDiscounts()
+    public static List<Discount> GetAllDiscounts(string fileName="Discount")
     {
         if (Discounts.Any())
             return Discounts;
-        var commands = Task.Run(() => FilesHelper.ReadFromJsonFile<List<Discount>>("Discounts")).Result;
+        var commands = Task.Run(() => FilesHelper.ReadFromJsonFile<List<Discount>>(fileName)).Result;
         Discounts = commands;
         return commands;
     }

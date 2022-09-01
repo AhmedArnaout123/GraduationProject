@@ -16,30 +16,23 @@ public class OrdersSeeder
         _mediator = mediator;
     }
 
-    public async Task Seed(int count=1000)
+    public async Task Seed(string fileName)
     {
         Console.WriteLine("Seeding Orders....");
-        var products = await Task.Run(ProductsSeeder.GetAllProducts);
-        var customers = await  Task.Run(CustomersSeeder.GetAllCustomers);
-        
-        for (int i = 0; i < count; i++)
+        var orders = GetAllOrders(fileName);
+        foreach(var order in orders)
         {
-            var id = Guid.NewGuid();
-            var items = GetOrderItems(id, products);
-            var customer = customers[Randoms.RandomInt(customers.Count)];
             var command = new CreateOrderCommand
             {
-                Date = Randoms.RandomDate(),
-                Id = id,
-                CustomerId = customer.Id,
-                Status = Enum.GetValues<OrderStatus>()[Randoms.RandomInt(2)],
-                Items = items,
-                Subtotal = items.Sum(o => o.ProductSubtotal),
-                Address = customer.Addresses[Randoms.RandomInt(customer.Addresses.Count)],
-                CustomerName = $"{customer.FirstName} {customer.LastName}"
+                Date = order.Date,
+                Id = order.Id,
+                CustomerId = order.CustomerId,
+                Status = order.Status,
+                Items = order.Items,
+                Address = order.Address,
+                CustomerName = order.CustomerName
             };
             await _mediator.Send(command);
-            Console.WriteLine(i);
         }
         Console.WriteLine("Seeding Orders Finished....");
     }
@@ -65,11 +58,11 @@ public class OrdersSeeder
         return items;
     }
 
-    public static void GenerateAndStoreAsJson(int count = 1000)
+    public static void GenerateAndStoreAsJson(string fileName, string customersFileName, string productsFileName, int count)
     {
         Console.WriteLine("Generating Orders....");
-        var products = Task.Run(ProductsSeeder.GetAllProducts).Result;
-        var customers = Task.Run(CustomersSeeder.GetAllCustomers).Result;
+        var products = Task.Run(() => ProductsSeeder.GetAllProducts(productsFileName)).Result;
+        var customers = Task.Run(() => CustomersSeeder.GetAllCustomers(customersFileName)).Result;
         List<Order> orders = new();
         for (int i = 0; i < count; i++)
         {
@@ -90,16 +83,16 @@ public class OrdersSeeder
             Console.WriteLine(i);
         }
 
-        Task.Run(() => FilesHelper.WriteToJsonFile("Orders", orders));
+        Task.Run(() => FilesHelper.WriteToJsonFile(fileName, orders));
         Orders = orders;
         Console.WriteLine("Generating Orders Finished....");
     }
     
-    public static List<Order> GetAllDiscounts()
+    public static List<Order> GetAllOrders(string fileName)
     {
         if (Orders.Any())
             return Orders;
-        var commands = Task.Run(() => FilesHelper.ReadFromJsonFile<List<Order>>("Orders")).Result;
+        var commands = Task.Run(() => FilesHelper.ReadFromJsonFile<List<Order>>(fileName)).Result;
         Orders = commands;
         return commands;
     }

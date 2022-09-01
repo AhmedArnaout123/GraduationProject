@@ -5,7 +5,6 @@ namespace GP.ECommerce1.Infrastructure.DataSeeder;
 
 public class DataSeedingManager
 {
-    
 // using (ServiceProvider serviceProvider = builder.Services.BuildServiceProvider())
 // {
 //     var mediator = serviceProvider.GetRequiredService<IMediator>();
@@ -13,89 +12,57 @@ public class DataSeedingManager
 //     await seedingManager.SeedCategories();
 //     await seedingManager.SeedDiscounts();
 // }
-    private readonly IMediator _mediator;
 
-    private readonly DataSeedingHelper _dataSeedingHelper;
+    private CategoriesSeeder CategoriesSeeder { get; set; }
+    private DiscountsSeeder DiscountsSeeder { get; set; }
+    private OrdersSeeder OrdersSeeder { get; set; }
+    private ProductsSeeder ProductsSeeder { get; set; }
+    private CustomersSeeder CustomersSeeder { get; set; }
+    private ReviewsSeeder ReviewsSeeder { get; set; }
+
+    public static string CategoriesFileName => "Categories";
+    public static string DiscountsFileName => "Discounts";
+
+    public static string Products1000FileName => "Products1000";
+    public static string Customers1000FileName => "Customers1000";
+    public static string Orders1000FileName => "Orders1000";
+    public static string Reviews1000FileName => "Reviews1000";
 
     public DataSeedingManager(IMediator mediator)
     {
-        _mediator = mediator;
-        _dataSeedingHelper = new DataSeedingHelper(mediator);
+        CategoriesSeeder = new(mediator);
+        DiscountsSeeder = new(mediator);
+        OrdersSeeder = new(mediator);
+        ProductsSeeder = new(mediator);
+        CustomersSeeder = new(mediator);
+        ReviewsSeeder = new(mediator);
     }
 
-    public async Task SeedData()
+    public async Task CreateMasterData()
     {
-        await SeedCategories();
-        await SeedDiscounts();
-        await SeedProducts();
-        await SeedCustomers();
-        await SeedReviews();
-        await SeedOrders(1000);
+        await Task.Run(() => CategoriesSeeder.GenerateAndStoreAsJson());
+        await Task.Run(() => DiscountsSeeder.GenerateAndStoreAsJson());
     }
 
-    public async Task SeedNormalSizeData()
+    public async Task SeedMasterData()
     {
-        await SeedCategories();
-        await SeedDiscounts();
-        await SeedProducts(1000);
-        await SeedCustomers(1000);
-        await SeedReviews();
-        await SeedOrders(1000);
-    }
-    public async Task Seed250000()
-    {
-        await SeedCategories();
-        await SeedDiscounts();
-        await SeedProducts(250000);
-        await SeedCustomers(250000);
-        await SeedOrders(500000);
+        await CategoriesSeeder.Seed(CategoriesFileName);
+        await DiscountsSeeder.Seed(DiscountsFileName);
     }
 
-    public async Task SeedCategories()
+    public async Task Create1000()
     {
-        var seeder = new CategoriesSeeder(_mediator);
-        await seeder.SeedSql();
-    }
-    
-    public async Task SeedDiscounts()
-    {
-        var seeder = new DiscountsSeeder(_mediator);
-        await seeder.Seed();
+        await Task.Run(() => ProductsSeeder.GenerateAndStoreAsJson(Products1000FileName, CategoriesFileName, DiscountsFileName, 1000));
+        await Task.Run(() => CustomersSeeder.GenerateAndStoreAsJson(Customers1000FileName, 1000));
+        await Task.Run(() => ReviewsSeeder.GenerateAndStoreAsJson(Reviews1000FileName, Customers1000FileName, Products1000FileName, 1000));
+        await Task.Run(() => OrdersSeeder.GenerateAndStoreAsJson(Orders1000FileName, Customers1000FileName, Products1000FileName, 1000));
     }
 
-    public async Task SeedProducts(int count = 1000)
+    public async Task Seed1000()
     {
-        var seeder = new ProductsSeeder(_mediator);
-        await seeder.Seed(count);
-    }
-
-    public async Task SeedCustomers(int count = 1000)
-    {
-        var seeder = new CustomersSeeder(_mediator);
-        await seeder.Seed(count);
-    }
-    
-    public async Task SeedReviews(int count = 1000)
-    {
-        var seeder = new ReviewsSeeder(_mediator);
-        await seeder.Seed();
-    }
-
-    // public async Task SeedAddresses()
-    // {
-    //     var seeder = new AddressesSeeder(_mediator, _dataSeedingHelper);
-    //     await seeder.Seed();
-    // }
-
-    // public async Task SeedShoppingCartsAndWishLists()
-    // {
-    //     var seeder = new ShoppingCartsAndWishListsSeeder(_mediator, _dataSeedingHelper);
-    //     await seeder.Seed();
-    // }
-
-    public async Task SeedOrders(int count)
-    {
-        var seeder = new OrdersSeeder(_mediator);
-        await seeder.Seed(count);
+        await ProductsSeeder.Seed(Products1000FileName);
+        await CustomersSeeder.Seed(Customers1000FileName);
+        await ReviewsSeeder.Seed(Reviews1000FileName);
+        await OrdersSeeder.Seed(Orders1000FileName);
     }
 }

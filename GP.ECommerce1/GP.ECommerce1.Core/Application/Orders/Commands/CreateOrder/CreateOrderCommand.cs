@@ -8,7 +8,7 @@ public class CreateOrderCommand : IRequest<Result>
 {
     public Guid Id { get; set; }
     public DateTime Date { get; set; }
-    public double Subtotal { get; set; }
+    
     public Guid CustomerId { get; set; }
 
     public string CustomerName { get; set; } = "";

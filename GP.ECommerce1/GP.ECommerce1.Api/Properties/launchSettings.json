@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "MongoDb.Normal": {
+    "MongoDb1000": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
@@ -18,7 +18,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DB_TYPE": "MongoDB",
-        "DB_NAME": "GP_ECommerce_Normal"
+        "DB_NAME": "GP_ECommerce_1000"
       }
     },
     "MongoDb250000": {
@@ -33,7 +33,7 @@
         "DB_NAME": "GP_ECommerce_250000"
       }
     },
-    "SQL.Normal": {
+    "SQL1000": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
@@ -42,7 +42,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DB_TYPE": "SQL",
-        "DB_NAME": "GP_ECommerce_Normal"
+        "DB_NAME": "GP_ECommerce_1000"
       }
     },
     "SQL250000": {

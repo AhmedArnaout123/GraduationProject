@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using GP.ECommerce1.Core.Application.Categories.Commands.CreateCategory;
+﻿using GP.ECommerce1.Core.Application.Categories.Commands.CreateCategory;
 using GP.ECommerce1.Core.Domain;
 using GP.Utilix;
 using MediatR;
@@ -17,20 +16,11 @@ public class CategoriesSeeder
         _mediator = mediator;
     }
 
-    public async Task SeedSql()
+    public async Task Seed(string fileName="Categories")
     {
         Console.WriteLine("Seeding Categories");
-        List<Category> categories = new();
-        foreach (var item in _rawData)
-        {
-            var category = new Category
-            {
-                Id = Guid.NewGuid(),
-                Name = item["cat_name"],
-                ParentId = item["cat_parent"] == "0" ? null : categories[int.Parse(item["cat_parent"]) - 1].Id
-            };
-            categories.Add(category);
-        }
+        var categories = GetAllCategories(fileName);
+        FilesHelper.ReadFromJsonFile<List<Category>>(fileName);
 
         foreach (var category in categories)
         {
@@ -46,7 +36,7 @@ public class CategoriesSeeder
         Console.WriteLine("Seeding Categories Succeeded");
     }
 
-    public static void GenerateAndStoreAsJson()
+    public static void GenerateAndStoreAsJson(string fileName="Categories")
     {
         Console.WriteLine("Generating Categories Started");
         List<Category> categories = new();
@@ -61,16 +51,16 @@ public class CategoriesSeeder
             categories.Add(category);
         }
 
-        Task.Run(() => FilesHelper.WriteToJsonFile("Categories", categories)).Wait();
+        Task.Run(() => FilesHelper.WriteToJsonFile(fileName, categories)).Wait();
         Categories = categories;
         Console.WriteLine("Categories Stored Successfully");
     }
     
-    public static List<Category> GetAllCategories()
+    public static List<Category> GetAllCategories(string fileName)
     {
         if (Categories.Any())
             return Categories;
-        var commands = Task.Run(() => FilesHelper.ReadFromJsonFile<List<Category>>("Categories")).Result;
+        var commands = Task.Run(() => FilesHelper.ReadFromJsonFile<List<Category>>(fileName)).Result;
         Categories = commands;
         return commands;
     }

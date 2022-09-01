@@ -26,7 +26,7 @@ public class GetCategoryProductsTestingQueryHandler : IRequestHandler<GetCategor
         Where CategoryId = @CategoryId";
         
         var command = new SqlCommand(stmt, _connection);
-        command.Parameters.AddWithValue("@CategoryId", request.CategoryId);
+        // command.Parameters.AddWithValue("@CategoryId", request.CategoryId);
         List<GetCategoryProductsQueryResponseEntry> entries = new();
         try
         {

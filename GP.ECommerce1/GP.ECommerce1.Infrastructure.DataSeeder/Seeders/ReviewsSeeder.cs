@@ -16,37 +16,37 @@ public class ReviewsSeeder
         _mediator = mediator;
     }
 
-    public async Task Seed(int count=1000)
+    public async Task Seed(string fileName)
     {
         Console.WriteLine("Seeding Reviews....");
-        var products = await Task.Run(ProductsSeeder.GetAllProducts);
-        var customers = await Task.Run(CustomersSeeder.GetAllCustomers);
-        for (int i = 0; i < count; i++)
+        var reviews = GetAllReviews(fileName);
+        foreach (var review in reviews)
         {
             var command = new CreateReviewCommand
             {
-                Comment = Randoms.RandomSentence(30),
-                Id = Guid.NewGuid(),
-                Rate = Randoms.RandomRate(),
-                CustomerId = customers[Randoms.RandomInt(customers.Count)].Id,
-                ProductId = products[Randoms.RandomInt(products.Count)].Id
+                Comment = review.Comment,
+                Id = review.Id,
+                Rate = review.Rate,
+                CustomerId = review.CustomerId,
+                ProductId = review.ProductId,
+                Date = review.Date,
+                CustomerName = review.CustomerName
             };
             await _mediator.Send(command);
-            Console.WriteLine(i);
         }
         Console.WriteLine("Seeding Reviews Succeeded....");
     }
     
-    public static void GenerateAndStoreAsJson(int count=1000)
+    public static void GenerateAndStoreAsJson(string fileName, string customersFileName, string productsFileName, int count)
     {
         Console.WriteLine("Generating Reviews....");
-        var products = Task.Run(ProductsSeeder.GetAllProducts).Result;
-        var customers = Task.Run(CustomersSeeder.GetAllCustomers).Result;
+        var products = Task.Run(() => ProductsSeeder.GetAllProducts(productsFileName)).Result;
+        var customers = Task.Run(() => CustomersSeeder.GetAllCustomers(customersFileName)).Result;
         List<Review> reviews = new();
         for (int i = 0; i < count; i++)
         {
             var customer = customers[Randoms.RandomInt(customers.Count)];
-            var review = new Review()
+            var review = new Review
             {
                 Comment = Randoms.RandomSentence(30),
                 Id = Guid.NewGuid(),
@@ -60,16 +60,16 @@ public class ReviewsSeeder
             Console.WriteLine(i);
         }
 
-        Task.Run(() => FilesHelper.WriteToJsonFile("Reviews", reviews)).Wait();
+        Task.Run(() => FilesHelper.WriteToJsonFile(fileName, reviews)).Wait();
         Reviews = reviews;
         Console.WriteLine("Seeding Reviews Succeeded....");
     }
     
-    public static List<Review> GetAllDiscounts()
+    public static List<Review> GetAllReviews(string fileName)
     {
         if (Reviews.Any())
             return Reviews;
-        var commands = Task.Run(() => FilesHelper.ReadFromJsonFile<List<Review>>("Reviews")).Result;
+        var commands = Task.Run(() => FilesHelper.ReadFromJsonFile<List<Review>>(fileName)).Result;
         Reviews = commands;
         return commands;
     }

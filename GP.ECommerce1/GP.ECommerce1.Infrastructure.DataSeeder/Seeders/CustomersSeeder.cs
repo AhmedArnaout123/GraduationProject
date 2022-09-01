@@ -1,4 +1,5 @@
-﻿using GP.ECommerce1.Core.Application.Customers.Commands.CreateCustomer;
+﻿using GP.ECommerce1.Core.Application.Customers.Commands.AddAddress;
+using GP.ECommerce1.Core.Application.Customers.Commands.CreateCustomer;
 using GP.ECommerce1.Core.Domain;
 using GP.Utilix;
 using MediatR;
@@ -16,28 +17,42 @@ public class CustomersSeeder
         _mediator = mediator;
     }
 
-    public async Task Seed(int count = 1000)
+    public async Task Seed(string fileName)
     {
         Console.WriteLine("Seeding Customers...");
-        for (int i = 1; i <= count; i++)
+        List<Customer> customers = GetAllCustomers(fileName);
+        foreach (var customer in customers)
         {
             var command = new CreateCustomerCommand
             {
-                Id = Guid.NewGuid(),
-                Email = Randoms.RandomEmail(),
-                FirstName = Randoms.RandomString(Randoms.RandomInt(3, 8)),
-                LastName = Randoms.RandomString(Randoms.RandomInt(3, 8)),
-                Password = Randoms.RandomString(Randoms.RandomInt(20, 25)),
-                PhoneNumber = Randoms.RandomPhoneNumber()
+                Email = customer.Email,
+                Id = customer.Id,
+                Password = Randoms.RandomString(8),
+                FirstName = customer.FirstName,
+                LastName = customer.LastName,
+                PhoneNumber = customer.PhoneNumber
             };
             await _mediator.Send(command);
-            Console.WriteLine(i);
+            foreach (var address in customer.Addresses)
+            {
+                var addressCommand = new AddAddressCommand
+                {
+                    City = address.City,
+                    Country = address.Country,
+                    Id = address.Id,
+                    State = address.State,
+                    Street1 = address.Street1,
+                    Street2 = address.Street2,
+                    CustomerId = address.CustomerId
+                };
+                await _mediator.Send(addressCommand);
+            }
         }
-        Console.WriteLine("Seeding Customers Succeeded...");
+        Console.WriteLine("Seeding Customers Finished...");
         // Console.WriteLine($"Times Consumed: {stopWatch}");
     }
 
-    public static void GenerateAndStoreAsJson(int count)
+    public static void GenerateAndStoreAsJson(string fileName, int count)
     {
         Console.WriteLine("Generating Customers");
         List<Customer> customers = new();
@@ -69,16 +84,16 @@ public class CustomersSeeder
             Console.WriteLine(i);
         }
 
-        Task.Run(() => FilesHelper.WriteToJsonFile("Customers", customers)).Wait();
+        Task.Run(() => FilesHelper.WriteToJsonFile(fileName, customers)).Wait();
         Customers = customers;
         Console.WriteLine("Generating Customers Succeeded...");
     }
 
-    public static List<Customer> GetAllCustomers()
+    public static List<Customer> GetAllCustomers(string fileName)
     {
         if (Customers.Any())
             return Customers;
-        var commands = Task.Run(() => FilesHelper.ReadFromJsonFile<List<Customer>>("Customers")).Result;
+        var commands = Task.Run(() => FilesHelper.ReadFromJsonFile<List<Customer>>(fileName)).Result;
         Customers = commands;
         return commands;
     }
