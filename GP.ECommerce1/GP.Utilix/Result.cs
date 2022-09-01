@@ -15,3 +15,10 @@ public class Result<T> : Result
     
     public T Value { get; set; }
 }
+
+public class TestingResult : Result
+{
+    public string ActionName { get; set; } = "";
+
+    public List<int> Millis { get; set; } = new();
+}

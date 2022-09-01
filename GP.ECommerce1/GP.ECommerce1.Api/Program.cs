@@ -1,4 +1,5 @@
 using GP.ECommerce1.Infrastructure.DataSeeder;
+using GP.ECommerce1.Infrastructure.DataSeeder.Seeders;
 using GP.ECommerce1.Infrastructure.MongoDb;
 using GP.ECommerce1.Infrastructure.Sql;
 using MediatR;
@@ -26,7 +27,7 @@ using (ServiceProvider serviceProvider = builder.Services.BuildServiceProvider()
 {
     var mediator = serviceProvider.GetRequiredService<IMediator>();
     var seedingManager = new DataSeedingManager(mediator);
-    await seedingManager.SeedNormalSizeData();
+    var categoriesSeeder = new CategoriesSeeder(mediator);
 }
 
 var app = builder.Build();

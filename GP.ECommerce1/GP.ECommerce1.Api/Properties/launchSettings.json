@@ -21,7 +21,7 @@
         "DB_NAME": "GP_ECommerce_Normal"
       }
     },
-    "MongoDb.LoadTesting": {
+    "MongoDb250000": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
@@ -30,7 +30,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DB_TYPE": "MongoDB",
-        "DB_NAME": "GP_ECommerce_LoadTesting"
+        "DB_NAME": "GP_ECommerce_250000"
       }
     },
     "SQL.Normal": {
@@ -45,7 +45,7 @@
         "DB_NAME": "GP_ECommerce_Normal"
       }
     },
-    "SQL.LoadTesting": {
+    "SQL250000": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
@@ -54,7 +54,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DB_TYPE": "SQL",
-        "DB_NAME": "GP_ECommerce_LoadTesting"
+        "DB_NAME": "GP_ECommerce_250000"
       }
     },
     "IIS Express": {

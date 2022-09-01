@@ -10,8 +10,12 @@ public static class DependencyInjection
 {
     public static void AddSqlInfrastructure(this IServiceCollection services)
     {
+        var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+        if (dbName == null)
+            throw new Exception("Couldn't Identify the Value of DB_NAME Variable");
+        
         var connectionString =
-            "Server=DESKTOP-9FJ5CB1\\SQLEXPRESS;Database=GP.ECommerce1;Trusted_Connection=True;MultipleActiveResultSets=true";
+            $"Server=DESKTOP-9FJ5CB1\\SQLEXPRESS;Database={dbName};Trusted_Connection=True;MultipleActiveResultSets=true";
         var connection = new SqlConnection(connectionString);
         services.AddSingleton(connection);
         services.AddMediatR(Assembly.GetExecutingAssembly());
