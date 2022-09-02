@@ -1,0 +1,82 @@
+﻿@page "/DbTesting"
+@using GP.ECommerce1.BlazorWebApp.Services.ClientServices
+@using GP.ECommerce1.BlazorWebApp.Models
+@using GP.ECommerce1.BlazorWebApp.Pages.Components
+@using System.Drawing
+
+@inject DbTestingClientService _dbTestingClientService
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between">
+        <h3 class="d-inline-block">Database Testing</h3>
+        <div>
+            <label style="font-size: 13px; font-weight: bold">Test Counts:</label>
+            <DxSpinEdit CssClass="d-inline-block"
+                        @bind-Value="TestsCount"
+                        ShowSpinButtons="false">
+            </DxSpinEdit>
+        </div>
+    </div>
+    <div class="mt-3">
+        <div class="alert alert-info">
+            <div class="d-flex justify-content-between px-4">
+                <label class="h4" style="color: black">Get Products Category</label>
+                <div>
+                    <DxButton Text="Run MongoDB Test"
+                              RenderStyle="ButtonRenderStyle.Success"
+                              Enabled="@CanRunTest"
+                              Click="@(() => GetCategoryProducts(DbType.MongoDb))"
+                              CssClass="ml-5">
+                    </DxButton>
+                    <DxButton Text="Run SQL Server Test"
+                              Enabled="@CanRunTest"
+                              Click="@(() => GetCategoryProducts(DbType.MongoDb))">
+                    </DxButton>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<DxPopup
+    @bind-Visible="@PopupVisible"
+    HeaderText="@TestTitle"
+    ShowFooter="true"
+    Width="1200px">
+    <BodyTemplate>
+        <ResultsChart TestsResult="@TestsResult"
+                      Color="@ChartColor"/>
+    </BodyTemplate>
+    <FooterContentTemplate>
+        <div class="text-center mr-auto ml-auto">
+            <h4 class="d-inline-block" style="font-weight: bold; color: crimson">Average: @(TestsResult.Average().ToString("0.00"))</h4>
+        </div>
+    </FooterContentTemplate>
+</DxPopup>
+
+@code {
+    int TestsCount { get; set; } = 10;
+
+    bool CanRunTest { get; set; } = true;
+    
+    bool PopupVisible { get; set; }
+
+    List<int> TestsResult { get; set; } = new();
+
+    string TestTitle { get; set; } = "";
+
+    Color ChartColor { get; set; }
+
+    private async Task GetCategoryProducts(DbType dbType) {
+        CanRunTest = false;
+        var result = await _dbTestingClientService.GetCategoryProducts(TestsCount, dbType);
+        TestTitle = result.ActionName + "   " +(dbType is DbType.MongoDb ? "MongoDB" : "SQL Server");
+        ChartColor = dbType is DbType.MongoDb ? Color.ForestGreen : Color.CornflowerBlue;
+        TestsResult = result.Millis;
+        PopupVisible = true;
+        CanRunTest = true;
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

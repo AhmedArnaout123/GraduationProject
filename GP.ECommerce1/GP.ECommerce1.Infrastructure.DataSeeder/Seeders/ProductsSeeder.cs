@@ -23,6 +23,7 @@ public class ProductsSeeder
         Console.WriteLine("Seeding Products....");
         var products = GetAllProducts(fileName);
         var stopWatch = new Stopwatch();
+        int counter = 0;
         stopWatch.Start();
         foreach (var product in products)
         {
@@ -39,6 +40,7 @@ public class ProductsSeeder
                 Images = product.Images
             };
             await _mediator.Send(command);
+            Console.WriteLine(++counter);
         }
 
         stopWatch.Stop();

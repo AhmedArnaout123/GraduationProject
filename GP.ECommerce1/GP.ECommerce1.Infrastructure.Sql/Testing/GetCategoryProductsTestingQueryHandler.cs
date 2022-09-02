@@ -1,7 +1,11 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using GP.ECommerce1.Core.Application.Products.Queries.GetCategoryProducts;
 using GP.ECommerce1.Core.Application.Testing;
+using GP.ECommerce1.Core.Application.Testing.Products;
+using GP.ECommerce1.Infrastructure.DataSeeder;
+using GP.ECommerce1.Infrastructure.DataSeeder.Seeders;
 using GP.Utilix;
 using MediatR;
 
@@ -19,6 +23,7 @@ public class GetCategoryProductsTestingQueryHandler : IRequestHandler<GetCategor
     
     public async Task<TestingResult> Handle(GetCategoryProductsTestingQuery request, CancellationToken cancellationToken)
     {
+        var categories = await Task.Run(() => CategoriesSeeder.GetAllCategories(DataSeedingManager.CategoriesFileName));
         var result = new TestingResult();
         string stmt = @"SELECT Products.Id, Price, Name, Products.MainImageUri, Discounts.Percentage as 'Discount'
         FROM Products
@@ -26,21 +31,26 @@ public class GetCategoryProductsTestingQueryHandler : IRequestHandler<GetCategor
         Where CategoryId = @CategoryId";
         
         var command = new SqlCommand(stmt, _connection);
-        // command.Parameters.AddWithValue("@CategoryId", request.CategoryId);
+        command.Parameters.Add("@CategoryId", SqlDbType.UniqueIdentifier);
         List<GetCategoryProductsQueryResponseEntry> entries = new();
         try
         {
             _connection.Open();
-            var stopWatch = new Stopwatch();
             int x = 0;
-            stopWatch.Start();
-            var reader = await command.ExecuteReaderAsync(cancellationToken);
 
-            while (reader.Read())
+            for (int i = 1; i <= request.TestsCount; i++)
             {
+                var categoryId = categories[Randoms.RandomInt(categories.Count)].Id;
+                command.Parameters["@CategoryId"].Value = categoryId;
+                var stopWatch = new Stopwatch();
+                var reader = await command.ExecuteReaderAsync(cancellationToken);
+                stopWatch.Start();
+                while (reader.Read())
+                {
+                }
+                stopWatch.Stop();
+                result.Millis.Add(stopWatch.Elapsed.Milliseconds);
             }
-            
-            stopWatch.Stop();
         }
         catch (Exception ex)
         {

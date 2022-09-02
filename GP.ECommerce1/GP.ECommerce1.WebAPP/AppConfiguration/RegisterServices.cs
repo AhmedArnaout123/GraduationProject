@@ -21,6 +21,7 @@ public static class RegisterServices
             client => client.BaseAddress = new Uri(apiUrl!));
         services.AddHttpClient<ProductsClientService>(
             client => client.BaseAddress = new Uri(apiUrl!));
+        services.AddScoped<DbTestingClientService>();
     }
 
     private static void AddDevExpress(this IServiceCollection services)

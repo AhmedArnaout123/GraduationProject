@@ -1,0 +1,49 @@
+﻿@using System.Drawing
+<div class="w-100 container my-5">
+    <DxChart Data="Data"
+             Width="100%">
+        <DxChartAreaSeries T="@(KeyValuePair<double, double>)"
+                           TArgument="@double"
+                           TValue="@double"
+                           ArgumentField="@(p => p.Key)"
+                           ValueField="@(p => p.Value)"
+                           SummaryMethod="Enumerable.Average"
+                           HoverMode="ChartContinuousSeriesHoverMode.None"
+                           Color="@Color">
+            <DxChartSeriesPoint Visible="true"
+                                HoverMode="ChartSeriesPointHoverMode.Point"
+                                Symbol="ChartPointSymbol.Cross"/>
+            <DxChartSeriesLabel Visible="false"
+                                Format="@(ChartElementFormat.FromLdmlString("ms"))"
+                                BackgroundColor="Color.Empty"/>
+        </DxChartAreaSeries>
+        <DxChartLegend Visible="false"/>
+        <DxChartTooltip Enabled="true">
+            @context.Point.Render((seriesPoint) =>
+                @<div style="margin: 0.75rem">
+                    <div>@seriesPoint.SeriesName</div>
+                    <span class="d-block">@($"Test: {seriesPoint.Argument}")</span>
+                    <span class="d-block">@($"Time: {seriesPoint.Value}ms")</span>
+                </div>
+            )
+        </DxChartTooltip>
+    </DxChart>
+</div>
+
+@code {
+
+    [Parameter]
+    public List<int> TestsResult { get; set; } = new();
+
+    [Parameter]
+    public Color Color { get; set; }
+
+    private List<KeyValuePair<double, double>> Data { get; set; } = new();
+
+    protected override void OnParametersSet() {
+        for (int i = 1; i <= TestsResult.Count; i++) {
+            Data.Add(new KeyValuePair<double, double>(i, TestsResult[i-1]));
+        }
+        InvokeAsync(StateHasChanged);
+    }
+}

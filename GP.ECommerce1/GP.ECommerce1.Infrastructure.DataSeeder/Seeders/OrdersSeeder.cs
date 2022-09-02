@@ -20,6 +20,7 @@ public class OrdersSeeder
     {
         Console.WriteLine("Seeding Orders....");
         var orders = GetAllOrders(fileName);
+        int counter = 0;
         foreach(var order in orders)
         {
             var command = new CreateOrderCommand
@@ -33,6 +34,7 @@ public class OrdersSeeder
                 CustomerName = order.CustomerName
             };
             await _mediator.Send(command);
+            Console.WriteLine(++counter);
         }
         Console.WriteLine("Seeding Orders Finished....");
     }

@@ -20,6 +20,7 @@ public class ReviewsSeeder
     {
         Console.WriteLine("Seeding Reviews....");
         var reviews = GetAllReviews(fileName);
+        int counter = 0;
         foreach (var review in reviews)
         {
             var command = new CreateReviewCommand
@@ -33,6 +34,7 @@ public class ReviewsSeeder
                 CustomerName = review.CustomerName
             };
             await _mediator.Send(command);
+            Console.WriteLine(++counter);
         }
         Console.WriteLine("Seeding Reviews Succeeded....");
     }

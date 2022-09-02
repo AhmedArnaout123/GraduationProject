@@ -21,6 +21,7 @@ public class CustomersSeeder
     {
         Console.WriteLine("Seeding Customers...");
         List<Customer> customers = GetAllCustomers(fileName);
+        int counter = 0;
         foreach (var customer in customers)
         {
             var command = new CreateCustomerCommand
@@ -47,6 +48,7 @@ public class CustomersSeeder
                 };
                 await _mediator.Send(addressCommand);
             }
+            Console.WriteLine(++counter);
         }
         Console.WriteLine("Seeding Customers Finished...");
         // Console.WriteLine($"Times Consumed: {stopWatch}");

@@ -14,6 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\GP.ECommerce1.Core\GP.ECommerce1.Core.csproj" />
+      <ProjectReference Include="..\GP.ECommerce1.Infrastructure.DataSeeder\GP.ECommerce1.Infrastructure.DataSeeder.csproj" />
     </ItemGroup>
 
 

@@ -1,4 +1,5 @@
 ﻿using GP.ECommerce1.Core.Application.Testing;
+using GP.ECommerce1.Core.Application.Testing.Products;
 using GP.Utilix;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +17,10 @@ public class DbTestingController
         _mediator = mediator;
     }   
     
-    [HttpGet]
+    [HttpGet("GetCategoryProducts")]
     public async Task<TestingResult> GetCategoryProducts([FromQuery] GetCategoryProductsTestingQuery query)
     {
-        return await _mediator.Send(query);
+        var result = await _mediator.Send(query);
+        return result;
     }
 }
