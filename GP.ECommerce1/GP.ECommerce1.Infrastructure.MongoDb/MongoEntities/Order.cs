@@ -4,13 +4,11 @@ namespace GP.ECommerce1.Infrastructure.MongoDb.MongoEntities;
 
 public class Order
 {
-    public string Id { get; set; } = "";
+    public Guid Id { get; set; }
     
     public DateTime Date { get; set; }
-    
-    public double Subtotal { get; set; }
 
-    public string CustomerId { get; set; } = "";
+    public Guid CustomerId { get; set; }
 
     public string CustomerName { get; set; } = "";
 
@@ -32,8 +30,6 @@ public class OrderItem
     public string ProductName { get; set; } = "";
     
     public double ProductPrice { get; set; }
-    
-    public double ProductSubtotal { get; set; }
     
     public int Quantity { get; set; }
 }

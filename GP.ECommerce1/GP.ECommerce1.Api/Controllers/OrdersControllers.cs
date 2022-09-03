@@ -1,4 +1,5 @@
 ﻿using GP.ECommerce1.Core.Application.Orders.Commands.CreateOrder;
+using GP.ECommerce1.Core.Application.Orders.Queries.GetCustomerOrders;
 using GP.ECommerce1.Core.Application.Orders.Queries.GetOrders;
 using GP.ECommerce1.Core.Domain;
 using GP.Utilix;
@@ -26,6 +27,12 @@ public class OrdersController
     
     [HttpGet]
     public async Task<Result<List<Order>>> GetOrders([FromQuery] GetOrdersQuery query)
+    {
+        return await _mediator.Send(query);
+    }
+    
+    [HttpGet("CustomerOrders")]
+    public async Task<Result<List<Order>>> GetCustomerOrders([FromQuery] GetCustomerOrdersQuery query)
     {
         return await _mediator.Send(query);
     }

@@ -27,10 +27,8 @@ else
 // {
 //     var mediator = serviceProvider.GetRequiredService<IMediator>();
 //     var seedingManager = new DataSeedingManager(mediator);
-//     await seedingManager.CreateMasterData();
-//     await seedingManager.SeedMasterData();
-//     await seedingManager.Create1000();
-//     await seedingManager.Seed1000();
+//     var os = new ShoppingCartsAndWishListsSeeder(mediator);
+//     await os.Seed();
 // }
 
 var app = builder.Build();

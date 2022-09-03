@@ -1,4 +1,5 @@
 ﻿using GP.ECommerce1.Core.Application.Products.Queries.GetCategoryProducts;
+using GP.ECommerce1.Core.Application.Products.Queries.GetProduct;
 using GP.Utilix;
 using JetBrains.Annotations;
 
@@ -15,6 +16,12 @@ public class ProductsClientService : ClientServiceBase
     {
         var result = await SendRequest<GetCategoryProductsQueryResponse>(HttpMethod.Get,
             $"{DefaultPath}/CategoryProducts?{nameof(GetCategoryProductsQuery.CategoryId)}={query.CategoryId}");
+        return result;
+    }
+
+    public async Task<Result<GetProductQueryResponse>> GetProduct(Guid Id)
+    {
+        var result = await SendRequest<GetProductQueryResponse>(HttpMethod.Get, $"{DefaultPath}/{Id}");
         return result;
     }
 }

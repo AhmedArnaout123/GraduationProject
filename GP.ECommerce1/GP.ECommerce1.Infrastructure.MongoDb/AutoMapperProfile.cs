@@ -46,6 +46,11 @@ public class AutoMapperProfile : Profile
         CreateMap<MongoEntities.Review, Review>()
             .ReverseMap();
 
+        CreateMap<MongoEntities.CartItem, CartItem>()
+            .ReverseMap();
+        CreateMap<MongoEntities.ShoppingCart, ShoppingCart>()
+            .ReverseMap();
+
         CreateMap<OrderItem, MongoEntities.OrderItem>()
             .ReverseMap();
 

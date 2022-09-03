@@ -1,0 +1,89 @@
+﻿@page "/Products/{id:guid}"
+@using GP.ECommerce1.BlazorWebApp.Services.ClientServices
+@using GP.ECommerce1.Core.Application.Products.Queries.GetProduct
+
+@inject ProductsClientService _productsClientService
+@inject IToastService _toastService
+
+<div class="container">
+    <div class="d-flex row mt-5 justify-content-end">
+        <a class="btn btn-primary text-white" role="button">Add to Cart <i class="fa fa-shopping-cart fa-clo"></i></a>
+    </div>
+    <div class="row mt-5">
+        <div class="col-4">
+            <div class="col-12">
+                <img src="@ProductResponse.Product.MainImageUri" alt="..." width="260" height="260"/>
+            </div>
+            @foreach (var image in ProductResponse.Product.Images) {
+                <div class="col-4 p-2">
+                    <img src="@image" alt="..."/>
+                </div>
+            }
+        </div>
+        <div class="col-8">
+            <div class="w-100 mt-5">
+                <h1>@ProductResponse.Product.Name</h1>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span class="font-weight-bold">Category:</span> @ProductResponse.Product.CategoryName
+                    </li>
+                    <li class="list-group-item">
+                        <span class="font-weight-bold">Price:</span> @ProductResponse.Product.Price
+                    </li>
+                    <li class="list-group-item">
+                        <span class="font-weight-bold">Discount:</span> @ProductResponse.Product.Discount
+                    </li>
+                    <li class="list-group-item">
+                        <span class="font-weight-bold">Subtotal:</span> @ProductResponse.Product.Subtotal
+                    </li>
+                    <li class="list-group-item">
+                        <span class="font-weight-bold">Brand:</span> @ProductResponse.Product.BrandName
+                    </li>
+                    <li class="list-group-item">
+                        <span class="font-weight-bold">Description:</span> @ProductResponse.Product.Description
+                    </li>
+                </ul>
+                <div class="mt-5">
+                    <div class="d-flex justify-content-between">
+                        <h1>Latest Reviews</h1>
+                        <a href="#" role="button">See All</a>
+                    </div>
+                    @foreach (var review in ProductResponse.LatestReviews) {
+                        <div class="card w-100 mb-3">
+                            <div class="row g-0">
+                                <div class="col-12">
+                                    <div class="card-body">
+                                        <h1 class="card-title font-weight-bold">@review.CustomerName</h1>
+                                        <p class="card-text">@review.Comment</p>
+                                        <p class="card-text">
+                                            <small class="text-muted">@review.Date.ToString("dd.MM.yyyy")</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private GetProductQueryResponse ProductResponse { get; set; } = new();
+
+    protected override async Task OnParametersSetAsync() {
+        var result = await _productsClientService.GetProduct(Id);
+        if (result.IsSuccess) {
+            ProductResponse = result.Value;
+            ProductResponse.Product.Images = ProductResponse.Product.Images.Select(_ => "https://gs1go2.azureedge.net/cdn/ff/h-6BPgP93lhfVAa5UAnu5U56CVBeFWhOSQ1F2tLBVpA/1642433538/public/html_standards_images/43771/images/image017.jpg").ToList();
+            ProductResponse.Product.MainImageUri = "https://gs1go2.azureedge.net/cdn/ff/h-6BPgP93lhfVAa5UAnu5U56CVBeFWhOSQ1F2tLBVpA/1642433538/public/html_standards_images/43771/images/image017.jpg";
+        } else
+            _toastService.ShowError(result.Error);
+    }
+
+}

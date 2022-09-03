@@ -5,10 +5,18 @@ public class Product
     public Guid Id { get; set; }
     
     public Guid CategoryId { get; set; }
-
+    
     public string CategoryName { get; set; } = "";
     
+    public Guid BrandId { get; set; }
+
+    public string BrandName { get; set; } = "";
+    
     public Discount? Discount { get; set; }
+
+    public double DiscountAmount => Price * (Discount?.Percentage ?? 0);
+
+    public double Subtotal => Price - DiscountAmount;
 
     public string MainImageUri { get; set; } = "";
 
