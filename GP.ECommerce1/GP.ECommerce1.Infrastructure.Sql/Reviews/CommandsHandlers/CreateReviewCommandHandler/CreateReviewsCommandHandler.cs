@@ -16,13 +16,14 @@ public class CreateReviewCommandHandler : IRequestHandler<CreateReviewCommand, R
     public async Task<Result> Handle(CreateReviewCommand request, CancellationToken cancellationToken)
     {
         var result = new Result{IsSuccess = true};
-        string stmt = "INSERT INTO Reviews Values(@Id,@Rate,@Comment,@CustomerId,@ProductId)";
+        string stmt = "INSERT INTO Reviews Values(@Id,@Rate,@Comment,@Date,@CustomerId,@ProductId)";
         var command = new SqlCommand(stmt, _sqlConnection);
         command.Parameters.AddWithValue("@Id", request.Id);
         command.Parameters.AddWithValue("@Rate", request.Rate);
         command.Parameters.AddWithValue("@Comment", request.Comment);
         command.Parameters.AddWithValue("@ProductId", request.ProductId);
         command.Parameters.AddWithValue("@CustomerId", request.CustomerId);
+        command.Parameters.AddWithValue("@Date", request.Date);
         try
         {
             _sqlConnection.Open();

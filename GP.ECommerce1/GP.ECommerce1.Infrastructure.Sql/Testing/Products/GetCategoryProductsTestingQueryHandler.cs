@@ -2,14 +2,13 @@
 using System.Data.SqlClient;
 using System.Diagnostics;
 using GP.ECommerce1.Core.Application.Products.Queries.GetCategoryProducts;
-using GP.ECommerce1.Core.Application.Testing;
 using GP.ECommerce1.Core.Application.Testing.Products;
 using GP.ECommerce1.Infrastructure.DataSeeder;
 using GP.ECommerce1.Infrastructure.DataSeeder.Seeders;
 using GP.Utilix;
 using MediatR;
 
-namespace GP.ECommerce1.Infrastructure.Sql.Testing;
+namespace GP.ECommerce1.Infrastructure.Sql.Testing.Products;
 
 public class GetCategoryProductsTestingQueryHandler : IRequestHandler<GetCategoryProductsTestingQuery, TestingResult>
 {
@@ -20,21 +19,33 @@ public class GetCategoryProductsTestingQueryHandler : IRequestHandler<GetCategor
     {
         _connection = connection;
     }
-    
-    public async Task<TestingResult> Handle(GetCategoryProductsTestingQuery request, CancellationToken cancellationToken)
+
+    public async Task<TestingResult> Handle(GetCategoryProductsTestingQuery request,
+        CancellationToken cancellationToken)
     {
-        var categories = await Task.Run(() => CategoriesSeeder.GetAllCategories(DataSeedingManager.CategoriesFileName));
-        var result = new TestingResult();
-        string stmt = @"SELECT Products.Id, Price, Name, Products.MainImageUri, Discounts.Percentage as 'Discount'
+        var result = new TestingResult {IsSuccess = false};
+        try
+        {
+            var categories =
+                await Task.Run(() => CategoriesSeeder.GetAllCategories(DataSeedingManager.CategoriesFileName));
+            _connection.Open();
+            var stmt = "DBCC DROPCLEANBUFFERS";
+            var command = new SqlCommand(stmt, _connection);
+            command.CommandTimeout = 10000;
+            await command.ExecuteNonQueryAsync();
+            stmt = "DBCC FREEPROCCACHE";
+            command.CommandText = stmt;
+            await command.ExecuteNonQueryAsync();
+            stmt = "DBCC FREESYSTEMCACHE ('SQL Plans');";
+            command.CommandText = stmt;
+            await command.ExecuteNonQueryAsync();
+             stmt = @"SELECT Products.Id, Price, Name, Products.MainImageUri, Discounts.Percentage as 'Discount'
         FROM Products
         INNER JOIN Discounts on Discounts.Id = Products.DiscountId
         Where CategoryId = @CategoryId";
-        
-        var command = new SqlCommand(stmt, _connection);
-        command.Parameters.Add("@CategoryId", SqlDbType.UniqueIdentifier);
-        List<GetCategoryProductsQueryResponseEntry> entries = new();
-        try
-        {
+             command.CommandText = stmt;
+            command.Parameters.Add("@CategoryId", SqlDbType.UniqueIdentifier);
+            List<GetCategoryProductsQueryResponseEntry> entries = new();
             _connection.Open();
             int x = 0;
 
@@ -48,6 +59,7 @@ public class GetCategoryProductsTestingQueryHandler : IRequestHandler<GetCategor
                 while (reader.Read())
                 {
                 }
+
                 stopWatch.Stop();
                 result.Millis.Add(stopWatch.Elapsed.Milliseconds);
             }

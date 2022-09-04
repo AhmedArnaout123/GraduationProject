@@ -8,10 +8,6 @@ public class Product
     
     public string CategoryName { get; set; } = "";
     
-    public Guid BrandId { get; set; }
-
-    public string BrandName { get; set; } = "";
-    
     public Discount? Discount { get; set; }
 
     public double DiscountAmount => Price * (Discount?.Percentage ?? 0);
@@ -27,6 +23,4 @@ public class Product
     public double Price { get; set; }
     
     public List<string> Images { get; set; } = new();
-    
-    public int Rate { get; set; }
 }

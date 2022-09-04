@@ -17,26 +17,8 @@
             </DxSpinEdit>
         </div>
     </div>
-    <div class="mt-3">
-        <div class="alert alert-info">
-            <div class="d-flex justify-content-between px-4">
-                <label class="h4" style="color: black">Get Products Category</label>
-                <div>
-                    <DxButton Text="Run MongoDB Test"
-                              RenderStyle="ButtonRenderStyle.Success"
-                              Enabled="@CanRunTest"
-                              Click="@(() => GetCategoryProducts(DbType.MongoDb))"
-                              CssClass="ml-5">
-                    </DxButton>
-                    <DxButton Text="Run SQL Server Test"
-                              Enabled="@CanRunTest"
-                              Click="@(() => GetCategoryProducts(DbType.MongoDb))">
-                    </DxButton>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    <DbTest TestTitle="Get Products Category" OnTestRun="@GetCategoryProducts" Enabled="CanRunTest"/>
+    <DbTest TestTitle="Get Product" OnTestRun="@GetCategoryProducts" Enabled="CanRunTest"/>
 </div>
 
 <DxPopup
@@ -59,7 +41,7 @@
     int TestsCount { get; set; } = 10;
 
     bool CanRunTest { get; set; } = true;
-    
+
     bool PopupVisible { get; set; }
 
     List<int> TestsResult { get; set; } = new();
@@ -71,7 +53,7 @@
     private async Task GetCategoryProducts(DbType dbType) {
         CanRunTest = false;
         var result = await _dbTestingClientService.GetCategoryProducts(TestsCount, dbType);
-        TestTitle = result.ActionName + "   " +(dbType is DbType.MongoDb ? "MongoDB" : "SQL Server");
+        TestTitle = result.ActionName + "   " + (dbType is DbType.MongoDb ? "MongoDB" : "SQL Server");
         ChartColor = dbType is DbType.MongoDb ? Color.ForestGreen : Color.CornflowerBlue;
         TestsResult = result.Millis;
         PopupVisible = true;

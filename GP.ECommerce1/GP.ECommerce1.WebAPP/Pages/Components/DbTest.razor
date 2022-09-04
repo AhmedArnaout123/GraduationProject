@@ -1,0 +1,33 @@
+﻿@using GP.ECommerce1.BlazorWebApp.Models
+<div class="mt-3">
+    <div class="alert alert-info">
+        <div class="d-flex justify-content-between px-4">
+            <label class="h4" style="color: black">@TestTitle</label>
+            <div>
+                <DxButton Text="Run MongoDB Test"
+                          RenderStyle="ButtonRenderStyle.Success"
+                          Enabled="@Enabled"
+                          Click="@(() => OnTestRun(DbType.MongoDb))"
+                          CssClass="ml-5">
+                </DxButton>
+                <DxButton Text="Run SQL Server Test"
+                          Enabled="@Enabled"
+                          Click="@(() => OnTestRun(DbType.MongoDb))">
+                </DxButton>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string TestTitle { get; set; } = "";
+
+    [Parameter]
+    public Func<DbType, Task> OnTestRun { get; set; } = (_ => { return Task.CompletedTask;}); 
+    
+    [Parameter]
+    public bool Enabled { get; set; }
+}

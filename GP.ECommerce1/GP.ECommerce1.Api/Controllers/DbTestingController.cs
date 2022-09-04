@@ -23,4 +23,11 @@ public class DbTestingController
         var result = await _mediator.Send(query);
         return result;
     }
+    
+    [HttpGet("GetProduct")]
+    public async Task<TestingResult> GetProduct([FromQuery] GetProductTestingQuery query)
+    {
+        var result = await _mediator.Send(query);
+        return result;
+    }
 }
