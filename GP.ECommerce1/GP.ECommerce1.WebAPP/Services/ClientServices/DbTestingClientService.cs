@@ -29,4 +29,18 @@ public class DbTestingClientService
         var result = await _client.GetFromJsonAsync<TestingResult>($"{Host}/{DefaultPath}/GetCategoryProducts?TestsCount={count}");
         return result!;
     }
+    
+    public async Task<TestingResult> GetProduct(int count, DbType dbType)
+    {
+        SetHost(dbType);
+        var result = await _client.GetFromJsonAsync<TestingResult>($"{Host}/{DefaultPath}/GetProduct?TestsCount={count}");
+        return result!;
+    }
+    
+    public async Task<TestingResult> GetAwaitingConfirmationOrders(int count, DbType dbType)
+    {
+        SetHost(dbType);
+        var result = await _client.GetFromJsonAsync<TestingResult>($"{Host}/{DefaultPath}/AwaitingConfirmationOrders?TestsCount={count}");
+        return result!;
+    }
 }

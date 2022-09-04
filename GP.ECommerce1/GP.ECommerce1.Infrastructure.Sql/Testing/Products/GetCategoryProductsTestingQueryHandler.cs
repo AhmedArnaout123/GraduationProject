@@ -31,7 +31,7 @@ public class GetCategoryProductsTestingQueryHandler : IRequestHandler<GetCategor
             _connection.Open();
             var stmt = "DBCC DROPCLEANBUFFERS";
             var command = new SqlCommand(stmt, _connection);
-            command.CommandTimeout = 10000;
+            command.CommandTimeout = 1000000;
             await command.ExecuteNonQueryAsync();
             stmt = "DBCC FREEPROCCACHE";
             command.CommandText = stmt;
@@ -40,27 +40,24 @@ public class GetCategoryProductsTestingQueryHandler : IRequestHandler<GetCategor
             command.CommandText = stmt;
             await command.ExecuteNonQueryAsync();
              stmt = @"SELECT Products.Id, Price, Name, Products.MainImageUri, Discounts.Percentage as 'Discount'
-        FROM Products
-        INNER JOIN Discounts on Discounts.Id = Products.DiscountId
-        Where CategoryId = @CategoryId";
+                        FROM Products
+                        INNER JOIN Discounts on Discounts.Id = Products.DiscountId
+                        Where CategoryId = @CategoryId";
              command.CommandText = stmt;
             command.Parameters.Add("@CategoryId", SqlDbType.UniqueIdentifier);
             List<GetCategoryProductsQueryResponseEntry> entries = new();
-            _connection.Open();
-            int x = 0;
-
             for (int i = 1; i <= request.TestsCount; i++)
             {
                 var categoryId = categories[Randoms.RandomInt(categories.Count)].Id;
                 command.Parameters["@CategoryId"].Value = categoryId;
                 var stopWatch = new Stopwatch();
-                var reader = await command.ExecuteReaderAsync(cancellationToken);
                 stopWatch.Start();
+                var reader = await command.ExecuteReaderAsync(cancellationToken);
                 while (reader.Read())
                 {
                 }
-
                 stopWatch.Stop();
+                reader.Close();
                 result.Millis.Add(stopWatch.Elapsed.Milliseconds);
             }
         }

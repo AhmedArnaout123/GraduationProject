@@ -21,7 +21,6 @@ public class GetProductTestingQueryHandler : IRequestHandler<GetProductTestingQu
     public async Task<TestingResult> Handle(GetProductTestingQuery request, CancellationToken cancellationToken)
     {
         var result = new TestingResult {IsSuccess = true};
-
         try
         {
             var products =
@@ -31,7 +30,7 @@ public class GetProductTestingQueryHandler : IRequestHandler<GetProductTestingQu
             {
                 var stmt = "DBCC DROPCLEANBUFFERS";
                 var command = new SqlCommand(stmt, _sqlConnection);
-                command.CommandTimeout = 10000;
+                command.CommandTimeout = 1000000;
                 await command.ExecuteNonQueryAsync();
                 stmt = "DBCC FREEPROCCACHE";
                 command.CommandText = stmt;
@@ -69,32 +68,17 @@ public class GetProductTestingQueryHandler : IRequestHandler<GetProductTestingQu
                 reader2.Close();
                 stmt = @"SELECT Reviews.Id, Rate, Comment, Date, FirstName, LastName FROM Reviews 
                          INNER JOIN Customers on Customers.Id = Reviews.CustomerId
-                         WHERE ProductId=@ProductId";
+                         WHERE ProductId=@ProductId
+                         ORDER BY DATE DESC";
                 command.CommandText = stmt;
                 var customerIds = new List<object>();
                 stopWatch.Start();
                 var reader3 = await command.ExecuteReaderAsync(cancellationToken);
                 while (reader3.Read())
                 {
-                    customerIds.Add(reader3["CustomerId"]);
                 }
                 stopWatch.Stop();
                 reader3.Close();
-                command.Parameters.Clear();
-                command.Parameters.Add("@CustomerId", SqlDbType.UniqueIdentifier);
-                command.CommandText = "SELECT FirstName, LastName FROM Customers WHERE Id=@CustomerId";
-                var ids = customerIds.Select(value => Guid.Parse(Convert.ToString(value)!)).Distinct().ToList();
-                foreach (var id in ids)
-                {
-                    command.Parameters["@CustomerId"].Value = id;
-                    stopWatch.Start();
-                    var reader4 = await command.ExecuteReaderAsync(cancellationToken);
-                    while (reader4.Read())
-                    {
-                    }
-                    stopWatch.Stop();
-                    reader4.Close();
-                }
 
                 result.Millis.Add((int) stopWatch.ElapsedMilliseconds);
                 command.Parameters.Clear();

@@ -23,13 +23,13 @@ else
     throw new Exception("Couldn't Identify the Value of the DB_TYPE Environment Variable.");
 
 
-using (ServiceProvider serviceProvider = builder.Services.BuildServiceProvider())
-{
-    var mediator = serviceProvider.GetRequiredService<IMediator>();
-    var seedingManager = new DataSeedingManager(mediator);
-    var os = new ReviewsSeeder(mediator);
-    await os.Seed(DataSeedingManager.Reviews250000FileName);
-}
+// using (ServiceProvider serviceProvider = builder.Services.BuildServiceProvider())
+// {
+//     var mediator = serviceProvider.GetRequiredService<IMediator>();
+//     var seedingManager = new DataSeedingManager(mediator);
+//     var os = new ReviewsSeeder(mediator);
+//     await os.Seed(DataSeedingManager.Reviews250000FileName);
+// }
 
 var app = builder.Build();
 

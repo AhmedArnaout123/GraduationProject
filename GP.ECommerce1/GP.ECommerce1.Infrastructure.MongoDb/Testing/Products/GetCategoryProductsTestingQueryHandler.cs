@@ -1,15 +1,13 @@
 ﻿using System.Diagnostics;
-using GP.ECommerce1.Core.Application.Testing;
 using GP.ECommerce1.Core.Application.Testing.Products;
 using GP.ECommerce1.Infrastructure.DataSeeder;
 using GP.ECommerce1.Infrastructure.DataSeeder.Seeders;
-using GP.ECommerce1.Infrastructure.MongoDb.MongoEntities;
 using GP.Utilix;
 using MediatR;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
-namespace GP.ECommerce1.Infrastructure.MongoDb.Testing;
+namespace GP.ECommerce1.Infrastructure.MongoDb.Testing.Products;
 
 public class GetCategoryProductsTestingQueryHandler : IRequestHandler<GetCategoryProductsTestingQuery, TestingResult>
 {

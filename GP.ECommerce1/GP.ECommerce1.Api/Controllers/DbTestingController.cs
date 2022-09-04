@@ -1,4 +1,5 @@
 ﻿using GP.ECommerce1.Core.Application.Testing;
+using GP.ECommerce1.Core.Application.Testing.Orders;
 using GP.ECommerce1.Core.Application.Testing.Products;
 using GP.Utilix;
 using MediatR;
@@ -26,6 +27,13 @@ public class DbTestingController
     
     [HttpGet("GetProduct")]
     public async Task<TestingResult> GetProduct([FromQuery] GetProductTestingQuery query)
+    {
+        var result = await _mediator.Send(query);
+        return result;
+    }
+    
+    [HttpGet("AwaitingConfirmationOrders")]
+    public async Task<TestingResult> GetAwaitingConfirmationOrders([FromQuery] GetAwaitingConfirmationOrdersTestingQuery query)
     {
         var result = await _mediator.Send(query);
         return result;

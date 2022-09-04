@@ -17,8 +17,9 @@
             </DxSpinEdit>
         </div>
     </div>
-    <DbTest TestTitle="Get Products Category" OnTestRun="@GetCategoryProducts" Enabled="CanRunTest"/>
-    <DbTest TestTitle="Get Product" OnTestRun="@GetCategoryProducts" Enabled="CanRunTest"/>
+    <DbTest TestTitle="Get Products Category" OnTestRun="@GetCategoryProducts" Enabled="@CanRunTest"/>
+    <DbTest TestTitle="Get Product" OnTestRun="@GetProduct" Enabled="@CanRunTest"/>
+    <DbTest TestTitle="Get Awaiting Confirmation Orders" OnTestRun="@GetAwaitingConfirmationOrders" Enabled="@CanRunTest"/>
 </div>
 
 <DxPopup
@@ -52,7 +53,32 @@
 
     private async Task GetCategoryProducts(DbType dbType) {
         CanRunTest = false;
+        await InvokeAsync(StateHasChanged);
         var result = await _dbTestingClientService.GetCategoryProducts(TestsCount, dbType);
+        TestTitle = result.ActionName + "   " + (dbType is DbType.MongoDb ? "MongoDB" : "SQL Server");
+        ChartColor = dbType is DbType.MongoDb ? Color.ForestGreen : Color.CornflowerBlue;
+        TestsResult = result.Millis;
+        PopupVisible = true;
+        CanRunTest = true;
+        await InvokeAsync(StateHasChanged);
+    }
+    
+    private async Task GetProduct(DbType dbType) {
+        CanRunTest = false;
+        await InvokeAsync(StateHasChanged);
+        var result = await _dbTestingClientService.GetProduct(TestsCount, dbType);
+        TestTitle = result.ActionName + "   " + (dbType is DbType.MongoDb ? "MongoDB" : "SQL Server");
+        ChartColor = dbType is DbType.MongoDb ? Color.ForestGreen : Color.CornflowerBlue;
+        TestsResult = result.Millis;
+        PopupVisible = true;
+        CanRunTest = true;
+        await InvokeAsync(StateHasChanged);
+    }
+    
+    private async Task GetAwaitingConfirmationOrders(DbType dbType) {
+        CanRunTest = false;
+        await InvokeAsync(StateHasChanged);
+        var result = await _dbTestingClientService.GetAwaitingConfirmationOrders(TestsCount, dbType);
         TestTitle = result.ActionName + "   " + (dbType is DbType.MongoDb ? "MongoDB" : "SQL Server");
         ChartColor = dbType is DbType.MongoDb ? Color.ForestGreen : Color.CornflowerBlue;
         TestsResult = result.Millis;
