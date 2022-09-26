@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using GP.ECommerce1.Core.Application.Testing.Products;
+using GP.ECommerce1.Core.Domain;
 using GP.ECommerce1.Infrastructure.DataSeeder;
 using GP.ECommerce1.Infrastructure.DataSeeder.Seeders;
 using GP.Utilix;
@@ -24,22 +25,29 @@ public class GetCategoryProductsTestingQueryHandler : IRequestHandler<GetCategor
         CancellationToken cancellationToken)
     {
         var categories = await Task.Run(() => CategoriesSeeder.GetAllCategories(DataSeedingManager.CategoriesFileName));
-        var collection = _mongoDatabase.GetCollection<BsonDocument>(Constants.ProductsCollectionName);
+        var collection = _mongoDatabase.GetCollection<MongoEntities.Product>(Constants.ProductsCollectionName);
         List<int> testingResults = new();
         for (int i = 1; i <= request.TestsCount; i++)
         {
             var categoryId = categories[Randoms.RandomInt(categories.Count)].Id;
             var filter =
-                new FilterDefinitionBuilder<BsonDocument>().Eq("CategoryId", categoryId);
+                new FilterDefinitionBuilder<MongoEntities.Product>().Eq("CategoryId", categoryId);
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            var products = collection.Find(filter).ToCursor();
+            var project = new ProjectionDefinitionBuilder<MongoEntities.Product>()
+                .Include(d => d.Price)
+                .Include(d => d.Name)
+                .Include(d => d.Discount.Percentage)
+                .Include(d => d.MainImageUri);
+            var products = collection.Find(filter)
+            .Project(project).ToCursor();
             foreach (var item in products.ToEnumerable())
             {
                 
             }
             stopWatch.Stop();
             testingResults.Add(stopWatch.Elapsed.Milliseconds);
+	    Console.WriteLine($"Finished Test {i}");
         }
 
         return new TestingResult{Millis = testingResults, ActionName = nameof(GetCategoryProductsTestingQuery)};

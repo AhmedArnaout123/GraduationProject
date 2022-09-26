@@ -73,8 +73,9 @@
 
     protected override async Task OnInitializedAsync() {
         var result = await _categoriesClientService.GetCategories();
-        if (result.IsSuccess)
+        if (result.IsSuccess) {
             Categories = result.Value;
+        }
         else
             _toastService.ShowError(result.Error);
         await InvokeAsync(StateHasChanged);

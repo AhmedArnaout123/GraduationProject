@@ -77,8 +77,8 @@
         var result = await _productsClientService.GetProduct(Id);
         if (result.IsSuccess) {
             ProductResponse = result.Value;
-            ProductResponse.Product.Images = ProductResponse.Product.Images.Select(_ => "https://gs1go2.azureedge.net/cdn/ff/h-6BPgP93lhfVAa5UAnu5U56CVBeFWhOSQ1F2tLBVpA/1642433538/public/html_standards_images/43771/images/image017.jpg").ToList();
-            ProductResponse.Product.MainImageUri = "https://gs1go2.azureedge.net/cdn/ff/h-6BPgP93lhfVAa5UAnu5U56CVBeFWhOSQ1F2tLBVpA/1642433538/public/html_standards_images/43771/images/image017.jpg";
+            // ProductResponse.Product.Images = ProductResponse.Product.Images.Select(_ => "https://gs1go2.azureedge.net/cdn/ff/h-6BPgP93lhfVAa5UAnu5U56CVBeFWhOSQ1F2tLBVpA/1642433538/public/html_standards_images/43771/images/image017.jpg").ToList();
+            // ProductResponse.Product.MainImageUri = "https://gs1go2.azureedge.net/cdn/ff/h-6BPgP93lhfVAa5UAnu5U56CVBeFWhOSQ1F2tLBVpA/1642433538/public/html_standards_images/43771/images/image017.jpg";
         } else
             _toastService.ShowError(result.Error);
     }

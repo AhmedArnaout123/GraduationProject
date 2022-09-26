@@ -33,6 +33,7 @@ public class GetAwaitingConfirmationOrdersTestingQueryHandler : IRequestHandler<
                 collection.Find(filter).ToList();
                 stopWatch.Stop();
                 result.Millis.Add(stopWatch.Elapsed.Milliseconds);
+                Console.WriteLine($"Finished Running Test {i}");
             }
         }
         catch (Exception e)
